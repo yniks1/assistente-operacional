@@ -1,0 +1,18 @@
+[theme]
+# Força o tema escuro como base
+base = "light"
+
+# Cor primária (o verde escuro)
+primaryColor = "#023d38" 
+
+# Cor de fundo principal da página (Preto puro)
+backgroundColor = "#ffffff"
+
+# Cor de fundo secundária (um cinza bem escuro para áreas de apoio)
+secondaryBackgroundColor = "#023d38"
+
+# Cor do texto principal
+textColor = "#ffffff"
+
+# Fonte padrão do sistema
+font = "sans serif"

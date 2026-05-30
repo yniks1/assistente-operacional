@@ -1,0 +1,11 @@
+# Ignorar variáveis de ambiente (Senhas/Chaves)
+.env
+
+# Ignorar pastas de ambiente virtual Python
+venv/
+env/
+.venv/
+
+# Ignorar caches do Python
+__pycache__/
+*.pyc
