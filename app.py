@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-import warnings 
+import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -13,144 +13,106 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.documents import Document
 
-# 1. Carrega as variáveis de ambiente
 load_dotenv()
 
-# 2. Configura a página da nossa interface
-st.set_page_config(page_title="Assistente Operacional", page_icon="🤖")
+st.set_page_config(page_title="Assistente Operacional", page_icon="🤖", layout="centered")
 
-# # Títulos centralizados e com a cor branca
-st.markdown("<h1 style='text-align: center; color: white;'>🤖 Assistente Operacional</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: white;'>Tire suas dúvidas sobre acionamentos operacionais em tempo real.</p>", unsafe_allow_html=True)
+# Título com "Operacional" em roxo
+st.markdown("""
+    <h1 style='text-align: center; color: white; font-size: 2.4rem; margin-bottom: 4px;'>
+        🤖 Assistente <span style='color: #a855f7;'>Operacional</span>
+    </h1>
+    <p style='text-align: center; color: #9ca3af; font-size: 1rem; margin-bottom: 30px;'>
+        Tire suas dúvidas sobre acionamentos operacionais em tempo real.
+    </p>
+""", unsafe_allow_html=True)
 
-<style>
-/* Remove elementos do Streamlit */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
+st.markdown("""
+    <style>
+    /* Fundo preto geral */
+    .stApp {
+        background-color: #0a0a0a !important;
+    }
 
-/* Fundo da página */
-.stApp {
-    background: radial-gradient(circle at top,
-        #0f0f15 0%,
-        #08080b 50%,
-        #000000 100%);
-}
+    #MainMenu, footer, header { visibility: hidden; }
 
-/* Card principal */
-div[data-testid="stVerticalBlock"]:has(#caixa-verde-chat) {
-    background: rgba(10,10,15,0.75) !important;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(130,90,255,0.15);
-    border-radius: 24px !important;
-    padding: 35px !important;
-    max-width: 900px;
-    margin: 40px auto !important;
+    /* Painel central do chat */
+    div[data-testid="stVerticalBlock"]:has(#caixa-chat-ancora) {
+        background-color: #111827 !important;
+        border: 1px solid #1f2937 !important;
+        border-radius: 20px !important;
+        padding: 24px !important;
+        margin: 0 auto 30px auto !important;
+        max-width: 760px !important;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.6) !important;
+    }
 
-    box-shadow:
-        0 0 30px rgba(130,90,255,0.05),
-        0 10px 40px rgba(0,0,0,0.6);
-}
+    /* Balão do usuário — roxo escuro */
+    div[data-testid="stChatMessage"]:nth-child(odd) {
+        background-color: #2d1f4e !important;
+        border: 1px solid #6d28d9 !important;
+        border-radius: 14px !important;
+        padding: 14px 18px !important;
+        margin-bottom: 10px !important;
+    }
 
-/* Título */
-.titulo-principal {
-    text-align:center;
-    color:white;
-    font-size:3rem;
-    font-weight:700;
+    /* Balão do assistente — cinza escuro */
+    div[data-testid="stChatMessage"]:nth-child(even) {
+        background-color: #1c1c2e !important;
+        border: 1px solid #2d2d44 !important;
+        border-radius: 14px !important;
+        padding: 14px 18px !important;
+        margin-bottom: 10px !important;
+    }
 
-    text-shadow:
-        0 0 10px rgba(180,140,255,0.2);
-}
+    /* Texto dentro dos balões */
+    div[data-testid="stChatMessage"] * {
+        color: #e5e7eb !important;
+    }
 
-/* Subtítulo */
-.subtitulo {
-    text-align:center;
-    color:#B8B8C2;
-    margin-bottom:35px;
-}
+    /* Caixa de input */
+    div[data-testid="stChatInput"] {
+        background-color: #111827 !important;
+        border: 1px solid #374151 !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+        max-width: 760px !important;
+        margin: 0 auto !important;
+    }
 
-/* Balão usuário */
-div[data-testid="stChatMessage"]:nth-child(odd) {
-    background: rgba(20,20,30,0.9) !important;
+    div[data-testid="stChatInput"] textarea {
+        color: #e5e7eb !important;
+        background-color: transparent !important;
+    }
 
-    border: 1px solid rgba(155,100,255,0.35);
+    div[data-testid="stChatInput"] textarea::placeholder {
+        color: #6b7280 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-    border-radius: 20px !important;
-    padding: 18px !important;
 
-    box-shadow:
-        0 0 15px rgba(155,100,255,0.08);
-}
-
-/* Balão IA */
-div[data-testid="stChatMessage"]:nth-child(even) {
-    background: rgba(15,15,20,0.95) !important;
-
-    border: 1px solid rgba(255,255,255,0.05);
-
-    border-radius: 20px !important;
-    padding: 18px !important;
-}
-
-/* Texto */
-div[data-testid="stChatMessage"] * {
-    color: #F2F2F2 !important;
-}
-
-/* Campo de entrada */
-div[data-testid="stChatInput"] {
-    background: rgba(8,8,12,0.95) !important;
-
-    border: 1px solid rgba(130,90,255,0.2) !important;
-
-    border-radius: 20px !important;
-
-    box-shadow:
-        0 0 20px rgba(130,90,255,0.08);
-
-    overflow: hidden !important;
-}
-
-/* Texto do input */
-div[data-testid="stChatInput"] textarea {
-    color: white !important;
-}
-
-/* Placeholder */
-div[data-testid="stChatInput"] textarea::placeholder {
-    color: #8b8b95 !important;
-}
-</style>
-"""
-st.markdown(estilo_painel_chat, unsafe_allow_html=True)
-
-# 3. Função para ler o arquivo de texto e criar a base de conhecimento
 @st.cache_resource
 def preparar_base_de_dados():
     caminho_arquivo = "manual.txt"
     if not os.path.exists(caminho_arquivo):
         raise FileNotFoundError(f"O arquivo '{caminho_arquivo}' não foi encontrado.")
-        
     with open(caminho_arquivo, "r", encoding="utf-8") as f:
         texto_manual = f.read()
-    
     docs = [Document(page_content=texto_manual, metadata={"source": caminho_arquivo})]
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
-    
     embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
     vectorstore = FAISS.from_documents(documents=splits, embedding=embeddings)
     return vectorstore.as_retriever(search_kwargs={"k": 4})
 
-# 4. Carregar a base de dados
+
 try:
     retriever = preparar_base_de_dados()
 except Exception as e:
     st.error(f"⚠️ Erro ao carregar as informações: {e}")
     st.stop()
 
-# 5. Configurar a IA do Google (LLM)
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2)
 system_prompt = (
     "Você é um assistente operacional rigoroso e preciso do setor de acionamento.\n"
@@ -169,33 +131,23 @@ def formatar_docs(docs):
 
 rag_chain = {"context": retriever | formatar_docs, "input": RunnablePassthrough()} | prompt | llm | StrOutputParser()
 
-# 7. Interface de Chat
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# CRIA A CAIXA VERDE DO CHAT E COLOCA A ÂNCORA INVISÍVEL
 caixa_chat = st.container()
-caixa_chat.markdown("<div id='caixa-verde-chat'></div>", unsafe_allow_html=True)
+caixa_chat.markdown("<div id='caixa-chat-ancora'></div>", unsafe_allow_html=True)
 
-# Exibe o histórico DENTRO da caixa verde
 with caixa_chat:
     for message in st.session_state.messages:
-        avatar_do_historico = "👤" if message["role"] == "user" else "🤖"
-        with st.chat_message(message["role"], avatar=avatar_do_historico):
+        avatar = "👤" if message["role"] == "user" else "🤖"
+        with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
 
-# O campo de digitação fica fixado no rodapé (padrão do Streamlit)
 if pergunta := st.chat_input("Qual é a sua dúvida operacional ou regra de associação?"):
-    
     st.session_state.messages.append({"role": "user", "content": pergunta})
-    
-    # Exibe a pergunta NOVA dentro da caixa verde
     with caixa_chat:
         with st.chat_message("user", avatar="👤"):
             st.markdown(pergunta)
-
-    # Exibe e processa a resposta NOVA dentro da caixa verde
     with caixa_chat:
         with st.chat_message("assistant", avatar="🤖"):
             with st.spinner("Pesquisando no manual de atendimento..."):
