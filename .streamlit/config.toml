@@ -1,15 +1,13 @@
-[theme]
-# Força o tema escuro como base
-base = "light"
+base = "dark"
 
-# Cor primária (o verde escuro)
-primaryColor = "#023d38" 
+# Cor primária (Fica branco/cinza claro quando clica nas coisas)
+primaryColor = "#ffffff" 
 
-# Cor de fundo principal da página (Preto puro)
-backgroundColor = "#ffffff"
+# Cor de fundo principal da página (O fundo escuro minimalista)
+backgroundColor = "#121212"
 
-# Cor de fundo secundária (um cinza bem escuro para áreas de apoio)
-secondaryBackgroundColor = "#023d38"
+# Cor de fundo secundária (O cinza escuro para a caixa de digitação)
+secondaryBackgroundColor = "#212121"
 
 # Cor do texto principal
 textColor = "#ffffff"
