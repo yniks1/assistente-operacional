@@ -1,3 +1,5 @@
+[theme]
+# Força o tema escuro como base
 base = "dark"
 
 # Cor primária (Fica branco/cinza claro quando clica nas coisas)
