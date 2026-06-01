@@ -23,52 +23,105 @@ st.set_page_config(page_title="Assistente Operacional", page_icon="🤖")
 st.markdown("<h1 style='text-align: center; color: white;'>🤖 Assistente Operacional</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: white;'>Tire suas dúvidas sobre acionamentos operacionais em tempo real.</p>", unsafe_allow_html=True)
 
-# --- CSS CUSTOMIZADO ---
-estilo_painel_chat = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    
-    /* TRUQUE: Pinta de Verde Escuro o container inteiro que tiver a nossa âncora dentro */
-    div[data-testid="stVerticalBlock"]:has(#caixa-verde-chat) {
-        background-color: #023d38 !important; 
-        padding: 30px !important;
-        border-radius: 16px !important;
-        box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.5) !important;
-        margin-top: 20px !important;
-        margin-bottom: 30px !important;
-    }
-    
-    /* Balão do Usuário (Lilás bem suave) */
-    div[data-testid="stChatMessage"]:nth-child(odd) {
-        background-color: #e2d9f3 !important;
-        border-radius: 12px !important;
-        padding: 15px !important;
-        border: none !important;
-    }
-    
-    /* Balão do Assistente (Branco/Creme) */
-    div[data-testid="stChatMessage"]:nth-child(even) {
-        background-color: #fbfbf6 !important;
-        border-radius: 12px !important;
-        padding: 15px !important;
-        border: none !important;
-    }
+<style>
+/* Remove elementos do Streamlit */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
 
-    /* CORREÇÃO: FORÇA O TEXTO E ÍCONES DENTRO DOS BALÕES A SEREM ESCUROS */
-    div[data-testid="stChatMessage"] * {
-        color: #1e1e1e !important;
-    }
+/* Fundo da página */
+.stApp {
+    background: radial-gradient(circle at top,
+        #0f0f15 0%,
+        #08080b 50%,
+        #000000 100%);
+}
 
-    /* Caixa de digitação fixada no rodapé */
-    div[data-testid="stChatInput"] {
-        border: 2px solid #023d38 !important;
-        background-color: #111111 !important; 
-        border-radius: 16px !important; /* Arredonda os cantos */
-        overflow: hidden !important; /* Corta as rebarbas quadradas dos cantos */
-    }
-    </style>
+/* Card principal */
+div[data-testid="stVerticalBlock"]:has(#caixa-verde-chat) {
+    background: rgba(10,10,15,0.75) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(130,90,255,0.15);
+    border-radius: 24px !important;
+    padding: 35px !important;
+    max-width: 900px;
+    margin: 40px auto !important;
+
+    box-shadow:
+        0 0 30px rgba(130,90,255,0.05),
+        0 10px 40px rgba(0,0,0,0.6);
+}
+
+/* Título */
+.titulo-principal {
+    text-align:center;
+    color:white;
+    font-size:3rem;
+    font-weight:700;
+
+    text-shadow:
+        0 0 10px rgba(180,140,255,0.2);
+}
+
+/* Subtítulo */
+.subtitulo {
+    text-align:center;
+    color:#B8B8C2;
+    margin-bottom:35px;
+}
+
+/* Balão usuário */
+div[data-testid="stChatMessage"]:nth-child(odd) {
+    background: rgba(20,20,30,0.9) !important;
+
+    border: 1px solid rgba(155,100,255,0.35);
+
+    border-radius: 20px !important;
+    padding: 18px !important;
+
+    box-shadow:
+        0 0 15px rgba(155,100,255,0.08);
+}
+
+/* Balão IA */
+div[data-testid="stChatMessage"]:nth-child(even) {
+    background: rgba(15,15,20,0.95) !important;
+
+    border: 1px solid rgba(255,255,255,0.05);
+
+    border-radius: 20px !important;
+    padding: 18px !important;
+}
+
+/* Texto */
+div[data-testid="stChatMessage"] * {
+    color: #F2F2F2 !important;
+}
+
+/* Campo de entrada */
+div[data-testid="stChatInput"] {
+    background: rgba(8,8,12,0.95) !important;
+
+    border: 1px solid rgba(130,90,255,0.2) !important;
+
+    border-radius: 20px !important;
+
+    box-shadow:
+        0 0 20px rgba(130,90,255,0.08);
+
+    overflow: hidden !important;
+}
+
+/* Texto do input */
+div[data-testid="stChatInput"] textarea {
+    color: white !important;
+}
+
+/* Placeholder */
+div[data-testid="stChatInput"] textarea::placeholder {
+    color: #8b8b95 !important;
+}
+</style>
 """
 st.markdown(estilo_painel_chat, unsafe_allow_html=True)
 
