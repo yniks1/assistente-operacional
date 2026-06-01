@@ -19,60 +19,58 @@ load_dotenv()
 # 2. Configura a página da nossa interface
 st.set_page_config(page_title="Assistente Operacional", page_icon="🤖")
 
-# Título minimalista e limpo
-st.markdown("<h2 style='text-align: center; color: white; margin-bottom: 50px;'>Como posso te ajudar hoje?</h2>", unsafe_allow_html=True)
+# # Títulos centralizados e com a cor branca
+st.markdown("<h1 style='text-align: center; color: white;'>🤖 Assistente Operacional</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: white;'>Tire suas dúvidas sobre acionamentos operacionais em tempo real.</p>", unsafe_allow_html=True)
 
-# --- CSS CUSTOMIZADO PARA O VISUAL MINIMALISTA ESCURO ---
-estilo_minimalista = """
+# --- CSS CUSTOMIZADO ---
+estilo_painel_chat = """
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Fundo da página escuro */
-    .stApp {
-        background-color: #121212;
+    /* TRUQUE: Pinta de Verde Escuro o container inteiro que tiver a nossa âncora dentro */
+    div[data-testid="stVerticalBlock"]:has(#caixa-verde-chat) {
+        background-color: #023d38 !important; 
+        padding: 30px !important;
+        border-radius: 16px !important;
+        box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.5) !important;
+        margin-top: 20px !important;
+        margin-bottom: 30px !important;
     }
     
-    /* Balão do Usuário (Cinza Escuro) */
+    /* Balão do Usuário (Lilás bem suave) */
     div[data-testid="stChatMessage"]:nth-child(odd) {
-        background-color: #212121 !important;
-        color: #ffffff !important;
-        border-radius: 20px !important;
-        padding: 15px 20px !important;
+        background-color: #e2d9f3 !important;
+        border-radius: 12px !important;
+        padding: 15px !important;
         border: none !important;
-        margin-bottom: 10px !important;
     }
     
-    /* Balão do Assistente (Transparente e sem bordas) */
+    /* Balão do Assistente (Branco/Creme) */
     div[data-testid="stChatMessage"]:nth-child(even) {
-        background-color: transparent !important;
-        color: #ffffff !important;
-        padding: 15px 20px !important;
+        background-color: #fbfbf6 !important;
+        border-radius: 12px !important;
+        padding: 15px !important;
         border: none !important;
-        margin-bottom: 10px !important;
     }
 
-    /* Força o texto dentro dos balões a ser branco */
+    /* CORREÇÃO: FORÇA O TEXTO E ÍCONES DENTRO DOS BALÕES A SEREM ESCUROS */
     div[data-testid="stChatMessage"] * {
-        color: #ffffff !important;
+        color: #1e1e1e !important;
     }
 
-    /* Caixa de digitação arredondada estilo pílula */
+    /* Caixa de digitação fixada no rodapé */
     div[data-testid="stChatInput"] {
-        border: 1px solid #333333 !important;
-        background-color: #212121 !important; 
-        border-radius: 25px !important; 
-        overflow: hidden !important;
-    }
-    
-    /* Cor do texto digitado na caixa */
-    div[data-testid="stChatInput"] textarea {
-        color: #ffffff !important;
+        border: 2px solid #023d38 !important;
+        background-color: #111111 !important; 
+        border-radius: 16px !important; /* Arredonda os cantos */
+        overflow: hidden !important; /* Corta as rebarbas quadradas dos cantos */
     }
     </style>
 """
-st.markdown(estilo_minimalista, unsafe_allow_html=True)
+st.markdown(estilo_painel_chat, unsafe_allow_html=True)
 
 # 3. Função para ler o arquivo de texto e criar a base de conhecimento
 @st.cache_resource
@@ -119,29 +117,38 @@ def formatar_docs(docs):
 rag_chain = {"context": retriever | formatar_docs, "input": RunnablePassthrough()} | prompt | llm | StrOutputParser()
 
 # 7. Interface de Chat
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Exibe o histórico de forma solta e fluida
-for message in st.session_state.messages:
-    avatar_do_historico = "👤" if message["role"] == "user" else "✨"
-    with st.chat_message(message["role"], avatar=avatar_do_historico):
-        st.markdown(message["content"])
+# CRIA A CAIXA VERDE DO CHAT E COLOCA A ÂNCORA INVISÍVEL
+caixa_chat = st.container()
+caixa_chat.markdown("<div id='caixa-verde-chat'></div>", unsafe_allow_html=True)
 
-# O campo de digitação fica fixado no rodapé
+# Exibe o histórico DENTRO da caixa verde
+with caixa_chat:
+    for message in st.session_state.messages:
+        avatar_do_historico = "👤" if message["role"] == "user" else "🤖"
+        with st.chat_message(message["role"], avatar=avatar_do_historico):
+            st.markdown(message["content"])
+
+# O campo de digitação fica fixado no rodapé (padrão do Streamlit)
 if pergunta := st.chat_input("Qual é a sua dúvida operacional ou regra de associação?"):
     
-    # Exibe a pergunta do usuário
     st.session_state.messages.append({"role": "user", "content": pergunta})
-    with st.chat_message("user", avatar="👤"):
-        st.markdown(pergunta)
+    
+    # Exibe a pergunta NOVA dentro da caixa verde
+    with caixa_chat:
+        with st.chat_message("user", avatar="👤"):
+            st.markdown(pergunta)
 
-    # Exibe e processa a resposta da IA com um ícone de brilho ✨
-    with st.chat_message("assistant", avatar="✨"):
-        with st.spinner("Pesquisando..."):
-            try:
-                resposta = rag_chain.invoke(pergunta)
-                st.markdown(resposta)
-                st.session_state.messages.append({"role": "assistant", "content": resposta})
-            except Exception as e:
-                st.error(f"Erro ao processar a resposta da IA: {e}")
+    # Exibe e processa a resposta NOVA dentro da caixa verde
+    with caixa_chat:
+        with st.chat_message("assistant", avatar="🤖"):
+            with st.spinner("Pesquisando no manual de atendimento..."):
+                try:
+                    resposta = rag_chain.invoke(pergunta)
+                    st.markdown(resposta)
+                    st.session_state.messages.append({"role": "assistant", "content": resposta})
+                except Exception as e:
+                    st.error(f"Erro ao processar a resposta da IA: {e}")
