@@ -6,7 +6,7 @@ base = "dark"
 primaryColor = "#ffffff" 
 
 # Cor de fundo principal da página (O fundo escuro minimalista)
-backgroundColor = "#121212"
+backgroundColor = "#0a0a0a"
 
 # Cor de fundo secundária (O cinza escuro para a caixa de digitação)
 secondaryBackgroundColor = "#212121"
