@@ -16,7 +16,9 @@ A assistência veicular 24 horas, não deve ser confudida com serviço de conven
 comodidade; 
  Os serviços de assistência veicular são aplicáveis a veículos de passeio, motocicletas, 
 utilitários e pesados, desde que o veículo esteja devidamente cadastrado na base da 
-assistência 24 horas – ATIVO. 
+assistência 24 horas – ATIVO.
+
+Uso de Patins: Todas as associações contemplam o uso de patins, a menos que associações específicas digam o contrário.
   
 
 
@@ -178,7 +180,9 @@ horário comercial;
 3. Guarda de veículo; 
 Proporcionando a segurança necessária para o veículo, condutor e seus ocupantes até a 
 remoção no primeiro dia útil ou subsequente. 
-Importante: Uso do reboque é Pré-requisito 
+Importante: Uso do reboque é Pré-requisito.
+
+Uso de Patins: Todas as associações contemplam o uso de patins, a menos que associações específicas digam o contrário.
  
  
 Solicitação de Atendimento 
@@ -589,10 +593,8 @@ INSTRUÇÃO INTERNA
 Caso ultrapasse a alçada, devemos coletar o atendimento, sem apresentar objeções, e comunicar o supervisor imediatamente para notificar no grupo de relacionamento por mensagem e na falta de retorno por ligação, solicitando a autorização.
 Após 15 minutos da SOLICITAÇÃO DE AUTORIZAÇÃO DE ATENDIMENTO solicitada pela a CENTRAL DE ATENDIMENTO no grupo de WHATSAPP e tentativa de contato telefônico sem sucesso, a CENTRAL DE ATENDIMENTO seguirá o atendimento de acordo com a cobertura do plano do cliente cadastrado na base da CENTRAL.
  ATENÇÃO: Alçada limite de 200km totais.
-PATINS
 NÃO CONTEMPLA O USO DE PATINS. CASO HAJA A EXISTÊNCIA DESSE CUSTO, DEVEMOS REPASSAR O VALOR AO CLIENTE.
-CARRO DE APOIO
-A AGN NÃO contempla o serviço.
+CARRO DE APOIO, A AGN NÃO contempla o serviço.
  REBOQUE
 FATOR GERADOR: FALTA DE COMBUSTÍVEL, INCIDENTES COM CHAVES E PNEUS AVARIADOS
 Fora do horário comercial, o veículo poderá ser encaminhado para residência do cliente no raio de 40 Km totais, tornando o atendimento conclusivo. 
