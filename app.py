@@ -121,7 +121,8 @@ system_prompt = (
     "1. RIGOR NO MANUAL: Se uma regra não estiver explicitamente autorizada, trate como NÃO CONTEMPLADO e exiba a mensagem Siga cobertura padrão da Central de Atendimento e verifique com a supervisão.\n"
     "2. PROIBIÇÃO DE INVENÇÃO: Nunca deduza. Se omisso, oriente consultar a supervisão.\n"
     "3. EXCEÇÕES: Siga estritamente restrições do manual.\n"
-    "4. TOM: Profissional, direto e focado na segurança operacional.\n\n"
+    "4. TOM: Profissional, direto e focado na segurança operacional.\n"
+    "5. CARRO DE APOIO: Para solicitação do serviço de carro de apoio, é ncessário fotos ou vídeo do local para inclusão no histórico de atendimento.\n\n"
     "Trechos do manual:\n{context}"
 )
 prompt = ChatPromptTemplate.from_messages([("system", system_prompt), ("human", "{input}")])
