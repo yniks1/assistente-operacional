@@ -91,7 +91,9 @@ Serviços da Assistência Veicular
 10. SOCORRO ELÉTRICO  (carga de bateria); 
 11. TÁXI – URBANO; 
 12. TRASLADO DE CORPO(S); 
- 
+13. CARRO DE APOIO. 
+
+Sempre que for questionado a respeito do carro de apoio e não tiver nenhuma informação no manual, exiba a seguinte mensagem Para solicitação de carro de apoio é necessário fotos e videos para incluir no histórico do atendimento. 
 
 
 Serviços da Assistência Veicular 
