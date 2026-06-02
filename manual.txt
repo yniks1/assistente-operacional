@@ -18,7 +18,6 @@ comodidade;
 utilitários e pesados, desde que o veículo esteja devidamente cadastrado na base da 
 assistência 24 horas – ATIVO.
 
-Uso de Patins: Todas as associações contemplam o uso de patins, a menos que associações específicas digam o contrário.
   
 
 
@@ -181,8 +180,6 @@ horário comercial;
 Proporcionando a segurança necessária para o veículo, condutor e seus ocupantes até a 
 remoção no primeiro dia útil ou subsequente. 
 Importante: Uso do reboque é Pré-requisito.
-
-Uso de Patins: Todas as associações contemplam o uso de patins, a menos que associações específicas digam o contrário.
  
  
 Solicitação de Atendimento 
@@ -644,7 +641,6 @@ INSTRUÇÃO INTERNA
 Caso ultrapasse a alçada, devemos coletar o atendimento, sem apresentar objeções, e comunicar o supervisor imediatamente para notificar no grupo de relacionamento por mensagem e na falta de retorno por ligação, solicitando a autorização.
 Após 15 minutos da SOLICITAÇÃO DE AUTORIZAÇÃO DE ATENDIMENTO solicitada pela a CENTRAL DE ATENDIMENTO no grupo de WHATSAPP e tentativa de contato telefônico sem sucesso, a CENTRAL DE ATENDIMENTO seguirá o atendimento de acordo com a cobertura do plano do cliente cadastrado na base da CENTRAL.
  ATENÇÃO: Alçada limite de 200km totais.
-PATINS
 NÃO CONTEMPLA O USO DE PATINS. CASO HAJA A EXISTÊNCIA DESSE CUSTO, DEVEMOS REPASSAR O VALOR AO CLIENTE.
 CARRO DE APOIO
 A AMI NÃO contempla o serviço.
@@ -958,7 +954,7 @@ FATOR GERADOR: TODOS OS FATOS GERADORES
 NÃO CONTEMPLA O SERVIÇO DE TÁXI. 
  
 
-MOTOR HOME
+MOTOR HOME 
 TODOS OS FATOS GERADORES:
 HORÁRIO COMERCIAL + FORA DO HORÁRIO COMERCIAL 
 Devemos encaminhar para a oficina da cidade mais próxima ou destino desejado, dentro de 200km de deslocamento (100KM ida e 100KM volta). Caso ultrapasse a quilometragem, devemos coletar todos os dados, sem apresentar objeções, e o serviço será colocado em análise.
@@ -974,6 +970,7 @@ Estrada de terra:
 Devemos coletar o atendimento e notificar o SUPERVISOR, para solicitar autorização via TELEFONE ou no GRUPO DE WHATSAPP.
 RESIDENCIAL
 100% via reembolso limitados às atuais coberturas.
+Uso de Patins: A associação Motor Home contempla o uso de patins.
 
 MG CAR
   MTA (TÁXI/PASSAGENS RODOVIÁRIAS/HOTEL) – COBERTURA PADRÃO. CLIENTE TEM DIREITO. 
