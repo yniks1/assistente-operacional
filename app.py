@@ -17,7 +17,6 @@ load_dotenv()
 
 st.set_page_config(page_title="Assistente Operacional", page_icon="🤖", layout="centered")
 
-# Título com "Operacional" em roxo
 st.markdown("""
     <h1 style='text-align: center; color: white; font-size: 2.4rem; margin-bottom: 4px;'>
         🤖 Assistente <span style='color: #a855f7;'>Operacional</span>
@@ -110,7 +109,12 @@ def preparar_base_de_dados():
 try:
     retriever = preparar_base_de_dados()
 except Exception as e:
-    st.error(f"⚠️ Erro ao carregar as informações: {e}")
+    mensagem_erro = str(e)
+    # Verifica se o erro na criação dos embeddings é sobre cota excedida
+    if "429" in mensagem_erro or "RESOURCE_EXHAUSTED" in mensagem_erro:
+        st.warning("O assistente se encontra em manutenção no momento, tente novamente mais tarde.")
+    else:
+        st.error(f"⚠️ Erro ao carregar as informações: {e}")
     st.stop()
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2)
@@ -121,7 +125,7 @@ system_prompt = (
     "1. RIGOR NO MANUAL: Se uma regra não estiver explicitamente autorizada, trate como NÃO CONTEMPLADO e exiba a mensagem Siga cobertura padrão da Central de Atendimento e verifique com a supervisão.\n"
     "2. PROIBIÇÃO DE INVENÇÃO: Nunca deduza. Se omisso, oriente consultar a supervisão.\n"
     "3. EXCEÇÕES: Siga estritamente restrições do manual.\n"
-    "4. TOM: Profissional, direto e focado na segurança operacional.\n"
+    "4. TOM: Profissional, amigável, direto e focado na segurança operacional.\n"
     "5. CARRO DE APOIO: Para solicitação do serviço de carro de apoio, é ncessário fotos ou vídeo do local para inclusão no histórico de atendimento.\n\n"
     "Trechos do manual:\n{context}"
 )
@@ -157,4 +161,9 @@ if pergunta := st.chat_input("Qual é a sua dúvida operacional ou regra de asso
                     st.markdown(resposta)
                     st.session_state.messages.append({"role": "assistant", "content": resposta})
                 except Exception as e:
-                    st.error(f"Erro ao processar a resposta da IA: {e}")
+                    mensagem_erro = str(e)
+                    # Verifica se o erro na hora de gerar a resposta é sobre cota excedida
+                    if "429" in mensagem_erro or "RESOURCE_EXHAUSTED" in mensagem_erro:
+                        st.warning("O assistente se encontra em manutenção no momento, tente novamente mais tarde.")
+                    else:
+                        st.error(f"Erro ao processar a resposta da IA: {e}")
