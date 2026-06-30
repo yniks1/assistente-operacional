@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-# Configuração da página (Mantida exatamente como a sua)
+# Configuração da página
 st.set_page_config(page_title="Assistente Operacional", page_icon="🤖", layout="centered")
 
 st.markdown("""
@@ -78,54 +78,55 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 1. NOVA BASE DE CONHECIMENTO (Substitui o manual.txt)
+# 1. BASE DE CONHECIMENTO LAPIDADA
 # ---------------------------------------------------------
-# Aqui você vai cadastrar todas as regras do seu manual.
-# Adicionei a regra do Carro de Apoio que estava no seu prompt original.
 BASE_CONHECIMENTO = [
+    # REGRAS GERAIS E PRINCÍPIOS
     {
-        "topico": "Princípios Básicos da Assistência",
-        "palavras_chave": ["princípios básicos", "urgência", "emergência", "quem pode acionar", "direito ao serviço", "veículo ativo"],
-        "resposta": "Atendimento de serviços de Urgência e Emergência: O veículo está impedido de se locomover por meios próprios e sua locomoção representa risco iminente ao condutor, passageiros ou demais entes do trânsito.[cite: 1] A assistência veicular 24 horas, não deve ser confudida com serviço de conveniência ou comodidade.[cite: 1] Os serviços são aplicáveis a veículos de passeio, motocicletas, utilitários e pesados, desde que o veículo esteja devidamente cadastrado na base da assistência 24 horas – ATIVO.[cite: 1] A cobertura é para o veículo e seus ocupantes, assim, qualquer pessoa que esteja conduzindo o veículo pode solicitar atendimento.[cite: 1]"
+        "topico": "Urgência e Emergência",
+        "palavras_chave": ["urgência", "emergência", "princípios básicos", "quem pode acionar", "veículo ativo"],
+        "resposta": "Atendimento de serviços de Urgência e Emergência ocorre quando o veículo está impedido de se locomover por meios próprios e representa risco iminente.[cite: 1] Os serviços são aplicáveis a veículos ATIVOS.[cite: 1] A cobertura é para o veículo e seus ocupantes; qualquer pessoa que esteja conduzindo pode solicitar.[cite: 1]"
     },
     {
-        "topico": "Planos e Fracionamento",
-        "palavras_chave": ["planos", "limite de quilometragem", "fracionamento", "saldo de km", "sobra de km"],
-        "resposta": "Plano de assistência veicular é um conjunto de serviços com limites de quilometragem e quantidade de utilização.[cite: 1] Ao ultrapassar o limite, o custo do deslocamento excedente será por conta do condutor, e deverá ser pago no ato diretamente ao prestador.[cite: 1] Em casos de fracionamento, não poderá ultrapassar a quilometragem total do plano contratado.[cite: 1] O atendimento é dado como encerrado na chegada ao destino, não restando direito a utilização de eventual saldo/sobra de quilometragem quando a distância for inferior ao limite.[cite: 1]"
+        "topico": "Planos, Fracionamento e Excedente",
+        "palavras_chave": ["fracionamento", "excedente", "saldo de km", "sobra de km", "limite de quilometragem"],
+        "resposta": "Ao ultrapassar o limite, o custo do deslocamento excedente será por conta do condutor, pago no ato diretamente ao prestador.[cite: 1] O fracionamento não pode ultrapassar a quilometragem total do plano.[cite: 1] O atendimento é encerrado na chegada ao destino, não restando direito a eventual saldo/sobra de quilometragem.[cite: 1]"
     },
     {
         "topico": "Fato Gerador",
-        "palavras_chave": ["fato gerador", "quais são os fatos", "motivo do atendimento"],
-        "resposta": "É o evento externo que causa a paralização do veículo.[cite: 1] São eles: Acidente/Colisão/Incêndio, Falta de Combustível, Furto de Pneu(s) ou Roda(s), Furto ou Roubo Recuperado, Incidente com Chaves, Pane Elétrica ou Mecânica e Pneu(s) Avariado(s).[cite: 1]"
+        "palavras_chave": ["fato gerador", "quais são os fatos", "eventos cobertos"],
+        "resposta": "São eles: Acidente/Colisão/Incêndio, Falta de Combustível, Furto de Pneu(s) ou Roda(s), Furto ou Roubo Recuperado, Incidente com Chaves, Pane Elétrica/Mecânica e Pneu(s) Avariado(s).[cite: 1]"
     },
     {
-        "topico": "Regras Gerais dos Serviços da Assistência",
-        "palavras_chave": ["serviços da assistência", "assistência pneumática", "troca de pneu", "auxílio combustível", "chaveiro", "abertura de porta", "carga de bateria", "socorro elétrico"],
-        "resposta": "Os serviços de Assistência Pneumática (troca de pneus), Auxílio Combustível (envio de até 5 litros), Chaveiro (abertura de portas) e Socorro Elétrico/Mecânico (carga de bateria) poderão solicitar a remoção do veículo caso não sejam conclusivos.[cite: 1] Nesses casos, o veículo será removido, respectivamente, para a borracharia, posto e chaveiro mais próximo.[cite: 1]"
+        "topico": "Serviços Não Conclusivos",
+        "palavras_chave": ["assistência pneumática geral", "auxílio combustível geral", "chaveiro geral", "carga de bateria geral"],
+        "resposta": "Assistência Pneumática, Auxílio Combustível, Chaveiro e Socorro Elétrico/Mecânico poderão solicitar a remoção do veículo (para borracharia, posto e chaveiro mais próximo) caso não sejam conclusivos.[cite: 1]"
     },
     {
-        "topico": "Carro de Apoio",
-        "palavras_chave": ["carro de apoio", "apoio", "carro extra"],
-        "resposta": "Sempre que for questionado a respeito do carro de apoio e não tiver nenhuma informação no manual, exiba a seguinte mensagem: Para solicitação de carro de apoio é necessário fotos e videos para incluir no histórico do atendimento.[cite: 1]"
+        "topico": "Carro de Apoio (Regra Geral)",
+        "palavras_chave": ["carro de apoio geral", "apoio geral"],
+        "resposta": "Sempre que for questionado a respeito do carro de apoio, exiba: Para solicitação de carro de apoio é necessário fotos e videos para incluir no histórico do atendimento.[cite: 1]"
     },
     {
         "topico": "Veículos Inativos",
         "palavras_chave": ["inativo", "fora da base", "sem cobertura", "cancelado"],
-        "resposta": "Não será realizado atendimento para o veículo que estiver INATIVO ou FORA DA BASE de cadastro da central de atendimento.[cite: 1] A central informará que o veículo está SEM COBERTURA, COBERTURA INATIVA ou SIMILAR.[cite: 1]"
+        "resposta": "Não será realizado atendimento para o veículo INATIVO ou FORA DA BASE.[cite: 1] A central informará SEM COBERTURA, COBERTURA INATIVA ou SIMILAR.[cite: 1]"
     },
     {
-        "topico": "Atendimentos Dentro e Fora do Horário Comercial",
-        "palavras_chave": ["horário comercial", "fora do horário", "continuação de atendimento", "dia subsequente"],
-        "resposta": "Dentro do horário comercial: Ao chegar no destino, o atendimento é conclusivo e o cliente não terá direito a continuação ou um novo atendimento pelo mesmo fato gerador.[cite: 1] Fora do horário comercial: Se o veículo foi enviado para a base do prestador ou domicílio, será facultada a continuação no primeiro dia subsequente.[cite: 1] Se enviado para endereço desconhecido, é dado como conclusivo sem direito a continuação.[cite: 1] A continuidade ocorre se o destino não estiver mais aberto, o condutor não souber o endereço, ou indisponibilidade de prestador para média/longa distância fora do horário.[cite: 1]"
+        "topico": "Atendimento Comercial vs Fora do Comercial",
+        "palavras_chave": ["horário comercial", "fora do horário", "continuação", "dia subsequente"],
+        "resposta": "Dentro do horário comercial: O atendimento é conclusivo e sem direito a continuação.[cite: 1] Fora do horário comercial: Se o veículo for para a base do prestador ou domicílio, será facultada a continuação no primeiro dia subsequente.[cite: 1] Se enviado para endereço desconhecido, é conclusivo sem continuação.[cite: 1]"
     },
     {
-        "topico": "Serviços Acessórios e Complementos",
-        "palavras_chave": ["serviços acessórios", "complemento", "diária de hotel", "mta", "guarda de veículo"],
-        "resposta": "Em impossibilidade de remoção imediata fora do horário comercial, existem ferramentas para proporcionar segurança: Diária de Hotel, MTA (Meio de Transporte Alternativo) e Guarda de veículo.[cite: 1] Importante: Uso do reboque é pré-requisito.[cite: 1]"
+        "topico": "Serviços Acessórios (Hotel, MTA, Guarda)",
+        "palavras_chave": ["serviços acessórios", "complemento", "diária de hotel geral", "mta geral", "guarda geral"],
+        "resposta": "Em caso de impossibilidade da prestação de serviço fora do horário comercial, utiliza-se Diária de Hotel, MTA ou Guarda de veículo.[cite: 1] Importante: O uso do reboque é pré-requisito.[cite: 1]"
     },
+
+    # ATENDIMENTOS SEM COBERTURA (RESTRIÇÕES GERAIS)
     {
         "topico": "Veículo Atolado ou Sem Acesso",
-        "palavras_chave": ["atolado", "sem acesso", "barro", "lama", "estrada de terra"],
+        "palavras_chave": ["atolado", "sem acesso", "barro", "lama", "via não pavimentada"],
         "resposta": "Veículo atolado ou sem acesso: Negligência ou via não reconhecida exigem que o cliente providencie meios próprios para levar à via pavimentada, sem reembolso.[cite: 1]"
     },
     {
@@ -135,8 +136,8 @@ BASE_CONHECIMENTO = [
     },
     {
         "topico": "Destombamento e Resgate Geral",
-        "palavras_chave": ["destombamento", "resgate", "caiu", "ribanceira"],
-        "resposta": "Destombamento/Resgate: Não estão incluídos nos planos gerais da assistência. Verifique sempre se há cobertura em caráter de exceção na associação do cliente.[cite: 1]"
+        "palavras_chave": ["destombamento geral", "resgate geral", "caiu", "ribanceira"],
+        "resposta": "Destombamento/Resgate: Não estão incluídos nos planos gerais (responsabilidade de agravo, alto custo). Verificar sempre cobertura em caráter de exceção.[cite: 1]"
     },
     {
         "topico": "Veículos Carregados",
@@ -155,155 +156,445 @@ BASE_CONHECIMENTO = [
     },
     {
         "topico": "Atividade Remunerada / Aplicativo",
-        "palavras_chave": ["atividade remunerada", "uber", "táxi para passageiro", "passageiros", "aplicativo"],
-        "resposta": "Veículos de atividade remunerada: Em caso de remoção, MTA, Táxi e Diária de hotel são facultados somente ao condutor. A responsabilidade civil dos passageiros é do cliente.[cite: 1]"
+        "palavras_chave": ["atividade remunerada", "uber", "aplicativo", "passageiros"],
+        "resposta": "Veículos de atividade remunerada: MTA, Táxi e Hotel são facultados somente ao condutor. A responsabilidade civil dos passageiros é do cliente.[cite: 1]"
+    },
+
+    # ATENDIMENTOS ESPECÍFICOS E MÁSCARAS
+    {
+        "topico": "Cavalo Mecânico",
+        "palavras_chave": ["cavalo mecânico", "engatado", "desatrelado"],
+        "resposta": "Cavalo mecânico: O cliente deve desengatar/desatrelar e estacionar o semi-reboque com pés de apoio.[cite: 1] O prestador liberará os freios e providenciará a remoção do cavalo mecânico.[cite: 1]"
     },
     {
-        "topico": "Atendimentos Específicos: Cavalo Mecânico, Animais e Frustrados",
-        "palavras_chave": ["cavalo mecânico", "engatado", "desatrelado", "reembolso", "atendimento frustrado", "animais", "cachorro", "gato"],
-        "resposta": "Cavalo mecânico: O cliente deve desengatar/desatrelar e estacionar com pés de apoio; o prestador tracionará o cavalo e providenciará a remoção.[cite: 1] Atendimentos frustrados: Se a central não acionar prestador e autorizar, o cliente realiza por meios próprios e pede reembolso via e-mail (reembolso@grupoassistme.com.br) com dados e nota fiscal.[cite: 1] Animais: Prestadores não são obrigados a transportar animais em MTA/Táxi/Hotel; tenta-se prosseguir, mas se impossível, o cliente segue por meios próprios sem reembolso.[cite: 1]"
+        "topico": "Atendimentos Frustrados / Reembolso",
+        "palavras_chave": ["frustrado", "reembolso email"],
+        "resposta": "Atendimentos frustrados: Se autorizado pela central, o cliente realiza por meios próprios e solicita reembolso via e-mail (reembolso@grupoassistme.com.br) enviando dados e Nota Fiscal.[cite: 1]"
     },
     {
-        "topico": "Comunicação e Máscaras (SMS, Previsões e Valores)",
-        "palavras_chave": ["sms", "falta de contato", "busca de prestadores", "nova previsão", "valores praticados", "preço do reboque", "veículo leve", "veículo pesado", "utilitário"],
-        "resposta": "Máscaras devem ser preenchidas para Falta de Contato, Busca de Prestadores, Nova Prévia, Atraso ou Cancelamento.[cite: 1] Valores praticados no mercado: Veículo Leve (Saída R$170,00, km excedente R$3,50), Utilitários (Saída R$200,00, km excedente R$4,00) e Pesados (Saída R$700,00, km excedente R$7,00).[cite: 1]"
+        "topico": "Transporte de Animais",
+        "palavras_chave": ["animais", "cachorro", "gato", "pet"],
+        "resposta": "Atendimentos com Animais: Prestadores não são obrigados a transportar animais em MTA, Táxi ou Hotel.[cite: 1] Se não for possível seguir o atendimento, o cliente deverá seguir por meios próprios sem reembolso.[cite: 1]"
     },
     {
-        "topico": "Veículos para Base e Formalização",
-        "palavras_chave": ["veículo para base", "base do prestador", "madrugada", "noturno", "formalização", "agendamento"],
-        "resposta": "Se o veículo for para a base durante a madrugada para segurança, o cliente deve ligar no próximo dia útil para solicitar a remoção, sob pena de pagar diárias. Pode usufruir de Hotel se o plano cobrir.[cite: 1] É obrigatório formalizar o serviço informando o endereço de origem e destino, aguardando o 'De acordo' do solicitante, inclusive em agendamentos.[cite: 1]"
+        "topico": "Máscaras e Comunicação",
+        "palavras_chave": ["máscara sms", "falta de contato", "nova previsão", "busca de prestadores"],
+        "resposta": "Sempre preencher as máscaras para: Falta de contato com o cliente, Busca de prestadores, Nova previsão de prévia, Atraso ou Cancelamento.[cite: 1]"
     },
     {
-        "topico": "Placa Mercosul e Máscara de Reembolso",
-        "palavras_chave": ["placa mercosul", "letras da placa", "processo de reembolso", "máscara de reembolso"],
-        "resposta": "Substituição Placa Mercosul: 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, 7=H, 8=I, 9=J.[cite: 1] Reembolso: Deve registrar serviço com valor, passageiros e motivo, vinculando o prestador REEMBOLSO CLIENTE.[cite: 1]"
+        "topico": "Valores Praticados no Mercado",
+        "palavras_chave": ["valores de mercado", "preço do reboque", "veículo leve", "veículo pesado", "utilitário"],
+        "resposta": "Valores de mercado: Veículos leves e motos (Saída R$170, km excedente R$3,50).[cite: 1] Utilitários/carga (Saída R$200, km excedente R$4,00).[cite: 1] Veículos Pesados (Saída R$700, km excedente R$7,00).[cite: 1]"
     },
     {
-        "topico": "Associação AAVB",
-        "palavras_chave": ["aavb", "reboque aavb", "destombamento aavb", "estrada de terra aavb"],
-        "resposta": "AAVB - Remoção para endereço de residência não cadastrada tem direito a continuação.[cite: 1] Resgate e destombamento: Necessário fotos/vídeos; libera alçada de R$200,00 e o excedente é do cliente.[cite: 1] Estrada de terra: Cliente tem direito, coletar e notificar supervisor; sem retorno, seguir cobertura.[cite: 1]"
+        "topico": "Nomenclatura dos Planos Especiais",
+        "palavras_chave": ["bônus 1", "bônus 3", "bônus 6", "dobro", "ilimitado", "light", "livre", "vip"],
+        "resposta": "Bônus 1/3/6 referem-se a remoções adicionais. Ilimitado: KM ilimitado nos fatos geradores. VIP: altas quilometragens para colisões. Light: Não possui MTA ou Hospedagem.[cite: 1]"
     },
     {
-        "topico": "Associação AAVM",
-        "palavras_chave": ["aavm", "reboque aavm", "estrada de terra aavm", "pane aavm", "táxi aavm", "mta aavm", "hotel aavm"],
-        "resposta": "AAVM - Acidente/Colisão/Incêndio: Obrigatoriamente para a Base do Prestador (custo da associação) e orientar contato com ADM.[cite: 1] Pane Elétrica/Mecânica: Comercial envia para oficina mais próxima até 200km totais; Fora do Comercial envia para base ou domicílio (alçada 200km totais), sem mencionar limite de 100km na ligação.[cite: 1] Estrada de terra: Tem direito com autorização.[cite: 1] Resgate: Requer fotos/vídeos.[cite: 1] Táxi Urbano: R$100,00 limitados a 50km totais (plano Light não tem MTA).[cite: 1] Retorno/Continuação (Acidente/Colisão/Incêndio/Furto/Roubo): R$350,00 para passagens.[cite: 1] Resgate: Alçada de R$200,00.[cite: 1] Hotel (mesmos fatos geradores graves): R$500,00.[cite: 1] Chaveiro: Cobertura padrão R$160,00.[cite: 1]"
+        "topico": "Veículo na Base (Madrugada)",
+        "palavras_chave": ["veículo na base", "madrugada", "noturno"],
+        "resposta": "Veículo para base (período noturno): Priorizando a segurança, o veículo fica na base e o cliente deve ligar no próximo dia útil (0800) para solicitar remoção final, senão pagará diárias de pátio.[cite: 1]"
     },
     {
-        "topico": "Associação ACTR",
-        "palavras_chave": ["actr", "reboque actr"],
-        "resposta": "ACTR - Todos os fatos geradores: Encaminhar para oficina ou destino dentro de 200km de deslocamento totais.[cite: 1] Se ultrapassar, colocar em análise sem apresentar objeções.[cite: 1]"
+        "topico": "Formalização de Serviços",
+        "palavras_chave": ["formalização", "agendamento"],
+        "resposta": "Formalização: É obrigatório abordar o serviço, endereço de origem e destino, e aguardar a confirmação do solicitante ('O Sr. confirma a Solicitação?').[cite: 1]"
     },
     {
-        "topico": "Associação ALFA BAHIA",
-        "palavras_chave": ["alfa bahia", "reboque alfa bahia", "estrada de terra alfa bahia"],
-        "resposta": "ALFA BAHIA - Estrada de terra: Tem direito à remoção; se valores acima do mercado, pedir autorização.[cite: 1] Todos os fatos: Prerrogativa de oficina mais próxima em raio de 200km totais; se cliente não aceitar, pedir liberação no grupo.[cite: 1]"
+        "topico": "Placa Mercosul",
+        "palavras_chave": ["placa mercosul", "letras da placa"],
+        "resposta": "Substituição: 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, 7=H, 8=I, 9=J.[cite: 1]"
     },
     {
-        "topico": "Associação ALICERCE",
-        "palavras_chave": ["alicerce", "reboque alicerce", "pneu alicerce", "destombamento alicerce", "mta alicerce"],
-        "resposta": "ALICERCE - Reboque: Encaminhar para oficina ou destino com limite de 300km totais; se ultrapassar, questionar opções, verificar outro recurso e colocar em análise.[cite: 1] Estrada de terra: Tem direito mediante autorização do supervisor.[cite: 1] Assistência Pneumática: Não possui cobertura para Pneus Avariados; orientar ligar no (31) 2559-8004.[cite: 1] Destombamento/Resgate: Até R$2.000,00 por evento.[cite: 1] MTA Urbano/Retorno: Limite total de R$200,00 por evento.[cite: 1]"
+        "topico": "Processo de Reembolso (Máscara)",
+        "palavras_chave": ["máscara de reembolso", "processo de reembolso"],
+        "resposta": "Reembolso: Deve-se registrar no histórico o Serviço, Valor, Passageiros, Motivo e vincular o prestador REEMBOLSO CLIENTE.[cite: 1]"
+    },
+
+    # REGRAS POR ASSOCIAÇÃO (LAPIDADAS E ATÔMICAS)
+    {
+        "topico": "AAVB - Remoção / Residência",
+        "palavras_chave": ["reboque aavb", "remoção aavb", "residência aavb"],
+        "resposta": "AAVB: Cliente poderá levar para outro endereço de residência não cadastrada e no dia seguinte será facultado o direito de continuação.[cite: 1]"
     },
     {
-        "topico": "Associações ABAPAV, AGIBENS e AGN",
-        "palavras_chave": ["abapav", "chaveiro abapav", "agibens", "reboque agibens", "táxi agibens", "agn", "reboque agn", "táxi agn", "mta agn", "resgate agn", "hotel agn"],
-        "resposta": "ABAPAV - Chaveiro: Fornece remoção de chaves quebradas e mão de obra de confecção (cliente paga o material).[cite: 1] AGIBENS - Reboque 200km totais e Táxi Urbano de até R$50,00.[cite: 1] AGN - Reboque 200km totais (se passar, pedir autorização e aguardar 15 min). Não contempla patins nem carro de apoio.[cite: 1] Pane/Combustível/Chave/Pneu fora do comercial: residência até 40km totais (conclusivo).[cite: 1] Táxi: R$50,00 até 50km totais.[cite: 1] MTA (Acidente/Colisão/Incêndio/Roubo): R$350,00 passagens.[cite: 1] Resgate: R$200,00.[cite: 1] Hotel (Acidente/Colisão/Incêndio/Roubo): R$500,00.[cite: 1]"
+        "topico": "AAVB - Destombamento e Resgate",
+        "palavras_chave": ["destombamento aavb", "resgate aavb"],
+        "resposta": "AAVB: Necessário solicitar vídeos e fotos. A associação libera uma alçada no valor de R$200,00. O que ultrapassar é responsabilidade do cliente.[cite: 1]"
     },
     {
-        "topico": "Associações ABS BOM SUCESSO, AMI, AVEP",
-        "palavras_chave": ["abs", "bom sucesso", "ami", "reboque ami", "avep", "reboque avep", "táxi avep", "hotel avep", "base avep"],
-        "resposta": "ABS BOM SUCESSO - Reboque acima de 300km totais exige autorização.[cite: 1] Pneus avariados vão para borracharia sem escolha de destino.[cite: 1] AMI - Mesmas regras da AGN para reboque (200km), táxi (50km/R$50), MTA (R$350), Resgate (R$200) e Hotel (R$500). Não tem carro de apoio.[cite: 1] AVEP - Reboque 200km totais para oficina. Residência não cadastrada tem direito a continuação no dia útil.[cite: 1] Via não reconhecida coberta.[cite: 1] Táxi até R$300,00 (150km totais).[cite: 1] Resgate R$2.500,00.[cite: 1] Base: AVEP paga diária para Acidente/Colisão/Incêndio; Pane cliente paga.[cite: 1] MTA Passagens: R$400,00. Hotel: 3 diárias de R$150,00.[cite: 1] Sem carro de apoio.[cite: 1]"
+        "topico": "AAVB - Estrada de Terra",
+        "palavras_chave": ["terra aavb", "estrada aavb"],
+        "resposta": "AAVB: Cliente tem direito à remoção em estrada de terra. Deve-se notificar o supervisor para autorização. Na falta de retorno, seguir com a cobertura.[cite: 1]"
     },
     {
-        "topico": "Associações AUTOCLASS, BR TRUCK, BV TRUCK, CLICK CAR, CLIKAR",
-        "palavras_chave": ["autoclass", "br truck", "resgate br truck", "bv truck", "click car", "táxi click car", "hotel click car", "clikar"],
-        "resposta": "AUTOCLASS e BV TRUCK - Oficina/Destino dentro de 200km totais, acima disso colocar em análise.[cite: 1] BR TRUCK - MTA Retorno/Continuação reembolsa passagens apenas para Acidente/Colisão/Incêndio/Roubo. Resgate exige fotos de todos os ângulos para autorização.[cite: 1] CLICK CAR e CLIKAR - Oficina em 200km totais, se não aceitar, pedir liberação no grupo.[cite: 1] CLICK CAR tem Táxi até R$100,00 (100km via reembolso) e Hotel de 1 diária (R$200,00).[cite: 1]"
+        "topico": "AAVM - Acidente, Colisão e Incêndio",
+        "palavras_chave": ["acidente aavm", "colisão aavm", "incêndio aavm"],
+        "resposta": "AAVM: Deve obrigatoriamente encaminhar para a BASE DO PRESTADOR (custo pago pela associação). Orientar o cliente a entrar em contato com o ADM para Sinistro.[cite: 1]"
     },
     {
-        "topico": "Associações CLUB CAR, CONFIANCE, COOPERVALES, COOPERTRAX",
-        "palavras_chave": ["club car", "reboque club car", "confiance", "coopervales", "táxi coopervales", "coopertrax"],
-        "resposta": "CLUB CAR - Reboque 200km totais (aguardar 15 min no grupo). Levar para residência não cadastrada garante continuação durante o mês.[cite: 1] Acidente/Colisão/Incêndio vai para residência e cliente contata ADM.[cite: 1] CONFIANCE e COOPERTRAX - Reboque acima de 200km totais pedir liberação.[cite: 1] COOPERVALES - Reboque 200km totais, Táxi até R$300,00 e cobre via não reconhecida.[cite: 1]"
+        "topico": "AAVM - Pane Elétrica / Mecânica",
+        "palavras_chave": ["pane aavm", "reboque aavm", "mecânica aavm"],
+        "resposta": "AAVM (Pane): Horário comercial envia para oficina até 200km totais. Fora do comercial: base ou domicílio (alçada 200km totais). NÃO mencionar limite de 100km na ligação.[cite: 1]"
     },
     {
-        "topico": "Associações DIGICAR, ESTILO, EXCLUSIVA, FORTE CAR",
-        "palavras_chave": ["digicar", "plantonista digicar", "estilo", "táxi estilo", "chaveiro estilo", "exclusiva", "forte car", "reboque forte car"],
-        "resposta": "DIGICAR - Reboque 200km totais; plantonistas Euler (31)9275-4187 e Romulo (31)9168-4363, não possui vistoria in loco.[cite: 1] ESTILO - Táxi/MTA de R$100,00 para Panes. Chaveiro cobre remoção de chave quebrada. Cobre estrada de terra.[cite: 1] EXCLUSIVA - Reboque 200km totais.[cite: 1] FORTE CAR - Panes: Oficina em 200km totais; Acidente/Colisão/Incêndio: Oficina em 200km totais ou Base/Residência se não tiver retorno do grupo.[cite: 1]"
+        "topico": "AAVM - Estrada de Terra e Resgate",
+        "palavras_chave": ["terra aavm", "estrada aavm", "resgate aavm", "destombamento aavm"],
+        "resposta": "AAVM: Tem direito à remoção em estrada de terra com notificação ao supervisor. Resgate: Necessário fotos/vídeos no WhatsApp para liberação.[cite: 1]"
     },
     {
-        "topico": "Associações GASP, GRAZIOTHI, GO LOCK, IDEAL",
-        "palavras_chave": ["gasp", "gestora", "fácil auto", "hora trabalhada", "graziothi", "go lock", "reboque go lock", "táxi go lock", "ideal", "reboque ideal"],
-        "resposta": "GASP - Reboque acima de 200km totais precisa notificar supervisor; não contempla hora trabalhada/parada.[cite: 1] GRAZIOTHI - Reboque 200km totais ou análise.[cite: 1] GO LOCK - Panes: Oficina em 200km totais; Acidente/Colisão/Incêndio: Local seguro pelo plano (se base, diária é do condutor).[cite: 1] Sem carro de apoio.[cite: 1] Táxi R$150,00, Passagens R$300,00, Hospedagem R$100,00.[cite: 1] IDEAL - Panes: Oficina em 200km totais (se não aceitar, reembolso no ADM). Acidente: Acima de 400km totais pede autorização no grupo.[cite: 1]"
+        "topico": "AAVM - Táxi Urbano",
+        "palavras_chave": ["táxi aavm", "taxi aavm"],
+        "resposta": "AAVM: Táxi Urbano no valor de até R$100,00 limitados a 50km totais (o plano Light não possui cobertura MTA).[cite: 1]"
     },
     {
-        "topico": "Associação INOVAR",
-        "palavras_chave": ["inovar", "reboque inovar", "combustível inovar", "táxi inovar", "mta inovar", "passagens inovar"],
-        "resposta": "INOVAR - Acima de 200km totais colocar em análise; sem retorno, enviar para Residência ou Base.[cite: 1] Falta de combustível: Cliente paga gasolina 5L e o galão (R$20,00).[cite: 1] Veículo carregado tem alçada de R$200,00.[cite: 1] Resgate exige fotos/vídeos no grupo.[cite: 1] Táxi Urbano tem alçada de R$600,00; MTA (Retorno/Continuação) libera R$600,00 para outro meio se não tiver ônibus num raio de 2h de espera (não informar excedente ao cliente).[cite: 1]"
+        "topico": "AAVM - MTA / Passagens Rodoviárias",
+        "palavras_chave": ["mta aavm", "passagem aavm", "retorno aavm"],
+        "resposta": "AAVM: MTA liberado somente para Acidente, Colisão, Incêndio, Furto ou Roubo. Valor máximo de R$350,00 (Plano Light sem cobertura).[cite: 1]"
     },
     {
-        "topico": "Associações INNOVE, LIBRE, LIDERY, LIFECLUB",
-        "palavras_chave": ["innove", "reboque innove", "resgate innove", "libre", "lidery", "hotel lidery", "lifeclub", "táxi lifeclub"],
-        "resposta": "INNOVE - Reboque 200km totais (esperar 15 min), Resgate alçada de R$250,00, cobre via não reconhecida.[cite: 1] LIBRE - Reboque 200km totais e cobre estrada de terra com notificação.[cite: 1] LIDERY - Pane elétrica/mecânica vai para oficina até 200km totais; Hotel tem 3 diárias limitadas a R$120,00 total por dia.[cite: 1] LIFECLUB - Não contempla serviço de táxi.[cite: 1]"
+        "topico": "AAVM - Hotel e Chaveiro",
+        "palavras_chave": ["hotel aavm", "chaveiro aavm", "porta aavm"],
+        "resposta": "AAVM: Hotel liberado para Acidente/Colisão/Incêndio/Roubo (R$500 máx).[cite: 1] Chaveiro: Cobertura padrão de R$160,00 (se ultrapassar, solicitar autorização).[cite: 1]"
     },
     {
-        "topico": "Associações MOTOR HOME, MG CAR, MYPASS",
-        "palavras_chave": ["motor home", "reboque motor home", "táxi motor home", "destombamento motor home", "mg car", "mypass"],
-        "resposta": "MOTOR HOME - Oficina/Destino em 200km totais; Táxi até R$70,00 (40km totais).[cite: 1] Destombamento em via pública via reembolso (R$2.500 veículo ou R$5.000 conjunto), não cobre resgate; permite patins e residencial é 100% reembolso.[cite: 1] MG CAR - Tem cobertura padrão de MTA/Táxi/Hotel.[cite: 1] MYPASS - Panes vai para oficina em 200km totais; Acidente padrão do plano; Não enviar serviços em análise no grupo da My Pass.[cite: 1]"
+        "topico": "ACTR - Reboque",
+        "palavras_chave": ["reboque actr", "remoção actr", "oficina actr"],
+        "resposta": "ACTR: Encaminhar para oficina ou destino dentro de 200km totais. Se ultrapassar, coletar dados sem objeção e colocar em análise para liberação.[cite: 1]"
     },
     {
-        "topico": "Associações NACIONAL CAR, NEXOOS, NÚCLEO PROTEÇÃO",
-        "palavras_chave": ["nacional car", "nexoos", "hotel nexoos", "núcleo proteção", "táxi núcleo"],
-        "resposta": "NACIONAL CAR - Resgate sob consulta no grupo com fotos/vídeos.[cite: 1] NEXOOS - Reboque 200km totais (15 min espera), Táxi R$150,00, Hotel 1 diária R$100,00.[cite: 1] NÚCLEO PROTEÇÃO - Reboque 200km totais, Táxi até R$200,00, MTA passagens a partir de 100km e 1 diária de Hotel R$100,00.[cite: 1]"
+        "topico": "ALFA BAHIA - Reboque e Estrada de Terra",
+        "palavras_chave": ["reboque alfa", "remoção alfa", "terra alfa", "estrada alfa"],
+        "resposta": "ALFA BAHIA: Prerrogativa de oficina mais próxima em raio de 200km totais.[cite: 1] Cliente tem direito à remoção em estrada de terra (se valor for acima do mercado, pedir autorização no WhatsApp).[cite: 1]"
     },
     {
-        "topico": "Associações PORTO SUL, PRIX, PROAPP, PROLINE",
-        "palavras_chave": ["porto sul", "prix", "proapp", "proline", "reboque proline"],
-        "resposta": "PORTO SUL - Comercial oficina 200km totais; Fora do comercial base ou domicílio 200km totais; cobre estrada de terra.[cite: 1] PRIX e PROLINE - Panes para oficina 200km totais; Acidente para oficina 200km totais ou Base/Residência se não tiver retorno do grupo. Proline cobre via não reconhecida.[cite: 1] PROAPP - Reboque 200km totais ou liberação no grupo.[cite: 1]"
+        "topico": "ALICERCE - Reboque e Estrada de Terra",
+        "palavras_chave": ["reboque alicerce", "remoção alicerce", "terra alicerce", "estrada alicerce"],
+        "resposta": "ALICERCE: Oficina ou destino com limite de 300km totais. Se ultrapassar, questionar opções mais próximas e enviar para análise.[cite: 1] Estrada de terra coberta mediante autorização via WhatsApp.[cite: 1]"
     },
     {
-        "topico": "Associações PROTEGE MAIS, PORTO BRASIL, POSITIVE CAR, REAL TRUCK",
-        "palavras_chave": ["protege mais", "porto brasil", "positive car", "real truck", "oficina para oficina", "hotel real truck"],
-        "resposta": "PROTEGE MAIS, PORTO BRASIL e POSITIVE CAR - Reboque 200km totais (100 ida e volta) ou liberação no grupo.[cite: 1] REAL TRUCK - Permite remoção Oficina para Oficina se não usou reboque por Pane no mês.[cite: 1] Resgate alçada de R$500,00.[cite: 1] Hotel 1 diária de R$150,00 por pessoa (máx R$300). Acidente acima de 1000km pede autorização; Táxi até R$150,00.[cite: 1]"
+        "topico": "ALICERCE - Pneus Avariados",
+        "palavras_chave": ["pneu alicerce", "pneumática alicerce", "borracharia alicerce"],
+        "resposta": "ALICERCE: Cliente não possui cobertura de reboque ou troca de pneus para Pneus Avariados. Orientar contato no ADM: (31) 2559-8004.[cite: 1]"
     },
     {
-        "topico": "Associações SPLIT RISK e Filiais",
-        "palavras_chave": ["split risk", "globus seguros", "stop club", "lince seguros", "turquim seguros", "meo seguros"],
-        "resposta": "SPLIT RISK e filiais (MY PASS, GLOBUS, LINCE, TURQUIM, MEO) - Panes no comercial vão para oficina em 200km totais; fora do comercial vão para local seguro do plano (se base, diária é do cliente).[cite: 1] Sem carro de apoio.[cite: 1] Táxi R$150,00, Passagens R$300,00, Hospedagem R$100,00.[cite: 1] Cobre estrada de terra notificando supervisor.[cite: 1]"
+        "topico": "ALICERCE - Resgate, MTA e Táxi",
+        "palavras_chave": ["resgate alicerce", "destombamento alicerce", "mta alicerce", "táxi alicerce", "taxi alicerce"],
+        "resposta": "ALICERCE: Resgate até R$2.000,00 por evento.[cite: 1] MTA e Táxi limitados a R$200,00 por evento independente da quilometragem.[cite: 1]"
     },
     {
-        "topico": "Associações SUPREMA, SUPERA, TÁXI FORT, TM BRASIL",
-        "palavras_chave": ["suprema", "base suprema", "supera", "táxi supera", "chaveiro supera", "táxi fort", "tm brasil", "mineradora"],
-        "resposta": "SUPREMA - Pane 200km totais; Acidente vai para Base do Prestador (associação paga diária), cliente contata ADM para retirar nas primeiras 4 horas úteis.[cite: 1] SUPERA - Táxi R$50,00, Retorno/Continuação R$200,00, Hotel R$200,00, Chaveiro R$100,00.[cite: 1] TÁXI FORT - Fora do comercial vai para base ou residência; Táxi somente para Acidente/Colisão/Incêndio até R$200,00 (200km totais).[cite: 1] TM BRASIL - Permite Oficina para Oficina se não usou reboque por Pane; cobre estrada de terra/mineradora.[cite: 1]"
+        "topico": "ABAPAV - Chaveiro",
+        "palavras_chave": ["chaveiro abapav", "chave abapav"],
+        "resposta": "ABAPAV: Além de abertura, fornece remoção de chaves quebradas. Na confecção de chaves, a Associação cobre deslocamento+mão de obra (cliente paga o material).[cite: 1]"
     },
     {
-        "topico": "Associações TRIAD, UNIBRAS, VENTURE, YOUCAR",
-        "palavras_chave": ["triad", "base triad", "unibras mhais", "rio de janeiro", "unibrás benefícios", "belo horizonte", "venture", "youcar"],
-        "resposta": "TRIAD - Reboque 200km totais. Acidente vai para Base do Prestador (associação paga diária) e cliente deve contatar ADM em 48h. Liberação da base só com autorização da associação.[cite: 1] UNIBRAS MHAIS (RJ) - Não contempla envio para base.[cite: 1] UNIBRÁS (BH) e VENTURE (apenas Pane) - Reboque 200km totais.[cite: 1] YOUCAR - Reboque 200km totais, Táxi R$200,00, Hotel 2 diárias de R$150,00, Resgate alçada de R$1.500,00 e cobre via não reconhecida.[cite: 1]"
+        "topico": "AGIBENS - Reboque e Táxi",
+        "palavras_chave": ["reboque agibens", "táxi agibens", "taxi agibens"],
+        "resposta": "AGIBENS: Reboque dentro de 200km totais (se passar, entra em análise).[cite: 1] Táxi Urbano de até R$50,00 (o que passar é excedente).[cite: 1]"
     },
     {
-        "topico": "Manual Residencial",
-        "palavras_chave": ["residencial", "chaveiro residencial", "eletricista", "encanador", "vidraceiro", "desentupimento", "ar condicionado", "linha branca"],
-        "resposta": "Chaveiro Emergencial: R$150,00 (3 por ano).[cite: 1] Eletricista: R$120,00 (3 por ano/1 por mês).[cite: 1] Encanador (tubulação aparente): R$120,00 (3 por ano/1 por mês).[cite: 1] Vidraceiro: R$150,00 (3 por ano/1 por mês).[cite: 1] Desentupimento: R$180,00 (3 por ano/1 por mês).[cite: 1] Limpeza de Ar Condicionado: R$180,00 (2 por ano, TRIAD a cada 6 meses).[cite: 1] Linha Branca/Marrom: R$160,00 (2 por ano/1 por mês).[cite: 1] Inspeção e Check-up Lar: R$120,00.[cite: 1]"
+        "topico": "AGN - Reboque e Exceções Gerais",
+        "palavras_chave": ["reboque agn", "apoio agn", "patins agn"],
+        "resposta": "AGN: Reboque raio de 200km totais (aguardar 15 min grupo). NÃO contempla patins (repassar valor ao cliente).[cite: 1] NÃO contempla carro de apoio.[cite: 1]"
     },
     {
-        "topico": "Erros Sistêmicos: Comunicação com a Hinova (SAME)",
-        "palavras_chave": ["hinova", "same", "erro de comunicação", "token", "sincronização"],
-        "resposta": "A mensagem indica que o TOKEN do cliente com a Hinova não está funcionando.[cite: 1] Passo 1: Verifique se outro item do mesmo cliente apresenta erro (Se sim, passo 2; Se não, avise suporte SAME).[cite: 1] Passo 2: Verifique outro cliente (Se sim, avise suporte; Se não, passo 3).[cite: 1] Passo 3: Tente sincronizar os itens da base (Se der certo, avise suporte; Se errado, passo 4).[cite: 1] Passo 4: Informe no grupo que há indisponibilidade na consulta do SGA.[cite: 1] Passo 5: O atendimento só pode ser aberto conforme último status (ATIVO abre normal; INATIVO abre particular).[cite: 1]"
+        "topico": "AGN - Fora do Horário Comercial (Pane)",
+        "palavras_chave": ["pane agn", "combustível agn", "pneu agn", "noite agn"],
+        "resposta": "AGN: Fora do comercial (Pane/Combustível/Chave/Pneu), o veículo vai para a residência no raio de 40km totais e o atendimento é CONCLUSIVO (sem continuação).[cite: 1]"
+    },
+    {
+        "topico": "AGN - Táxi, MTA, Resgate e Hotel",
+        "palavras_chave": ["táxi agn", "taxi agn", "mta agn", "resgate agn", "hotel agn"],
+        "resposta": "AGN: Táxi até 50km totais.[cite: 1] MTA Passagens (só para Acidente/Colisão/Incêndio/Roubo) até R$350,00.[cite: 1] Resgate alçada de R$200,00.[cite: 1] Hotel (só para Acidente/Colisão/Incêndio/Roubo) máx R$500,00.[cite: 1]"
+    },
+    {
+        "topico": "ABS BOM SUCESSO - Reboque e Pneus",
+        "palavras_chave": ["reboque abs", "reboque bom", "pneu abs", "pneu bom"],
+        "resposta": "ABS BOM SUCESSO: Reboque acima de 300km totais pede autorização no grupo.[cite: 1] Pneus avariados vão obrigatoriamente para borracharia/oficina mais próxima (cliente não escolhe endereço, se fechado fica conclusivo).[cite: 1]"
+    },
+    {
+        "topico": "AMI - Reboque, Táxi, MTA, Resgate e Hotel",
+        "palavras_chave": ["reboque ami", "apoio ami", "táxi ami", "taxi ami", "mta ami", "resgate ami", "hotel ami"],
+        "resposta": "AMI: Segue regras idênticas à AGN (Reboque 200km, Táxi 50km/R$50, MTA R$350, Resgate R$200, Hotel R$500 para acidentes graves).[cite: 1] NÃO contempla patins e carro de apoio.[cite: 1] Pane fora do comercial vai para casa raio de 40km conclusivo.[cite: 1]"
+    },
+    {
+        "topico": "AVEP - Reboque, Via de Terra e Táxi",
+        "palavras_chave": ["reboque avep", "terra avep", "estrada avep", "táxi avep", "taxi avep"],
+        "resposta": "AVEP: Reboque para oficina em 200km totais. Residência não cadastrada tem direito a continuação no dia útil.[cite: 1] Estrada de terra coberta.[cite: 1] Táxi até R$300,00 (75km ida/volta).[cite: 1] NÃO contempla carro de apoio.[cite: 1]"
+    },
+    {
+        "topico": "AVEP - Destombamento, Base, MTA e Hotel",
+        "palavras_chave": ["destombamento avep", "resgate avep", "base avep", "mta avep", "hotel avep"],
+        "resposta": "AVEP: Resgate de R$2.500,00.[cite: 1] Veículo p/ Base: Acidente/Colisão/Incêndio a AVEP paga; Pane Elétrica/Mecânica o cliente paga a diária.[cite: 1] MTA Passagens: R$400,00.[cite: 1] Hotel: até 3 diárias de R$150,00.[cite: 1]"
+    },
+    {
+        "topico": "AUTOCLASS, BV TRUCK, CLIKAR",
+        "palavras_chave": ["reboque autoclass", "reboque bv", "reboque clikar"],
+        "resposta": "Estas associações (AUTOCLASS, BV TRUCK, CLIKAR): Encaminhar para oficina ou destino dentro de 200km totais. Se ultrapassar, colocar em análise no grupo.[cite: 1]"
+    },
+    {
+        "topico": "BR TRUCK - MTA e Resgate",
+        "palavras_chave": ["mta br", "passagem br", "resgate br", "destombamento br"],
+        "resposta": "BR TRUCK: MTA reembolsa passagens somente para Acidente/Colisão/Incêndio/Roubo.[cite: 1] Resgate exige envio de fotos de TODOS os ângulos no grupo.[cite: 1]"
+    },
+    {
+        "topico": "CLICK CAR - Reboque, Táxi e Hotel",
+        "palavras_chave": ["reboque click", "táxi click", "taxi click", "hotel click"],
+        "resposta": "CLICK CAR: Reboque 200km totais.[cite: 1] Táxi máx R$100,00 até 100km (via reembolso).[cite: 1] Hotel limite de 1 diária de R$200,00.[cite: 1]"
+    },
+    {
+        "topico": "CLUB CAR - Reboque, Residência, Terra e Acidente",
+        "palavras_chave": ["reboque club", "residência club", "terra club", "acidente club", "colisão club"],
+        "resposta": "CLUB CAR: Reboque 200km totais (aguardar 15 min grupo).[cite: 1] Residência não cadastrada: tem continuação durante o mês.[cite: 1] Terra coberta.[cite: 1] Acidente/Colisão/Incêndio: orientar direcionar para a residência e contatar o ADM no próximo dia útil.[cite: 1]"
+    },
+    {
+        "topico": "CONFIANCE e COOPERTRAX",
+        "palavras_chave": ["reboque confiance", "reboque coopertrax"],
+        "resposta": "CONFIANCE / COOPERTRAX: Atendimentos que ultrapassem o raio de 200km totais devem ser colocados em análise no grupo.[cite: 1]"
+    },
+    {
+        "topico": "COOPERVALES - Reboque, Táxi e Estrada",
+        "palavras_chave": ["reboque coopervales", "táxi coopervales", "taxi coopervales", "terra coopervales"],
+        "resposta": "COOPERVALES: Reboque 200km totais.[cite: 1] Táxi máx R$300,00 até 100km dist.[cite: 1] Estrada de terra coberta (se muito alto, prévia autorização).[cite: 1]"
+    },
+    {
+        "topico": "DIGICAR - Reboque, Plantão e Roubo",
+        "palavras_chave": ["reboque digicar", "plantonista digicar", "furto digicar", "roubo digicar"],
+        "resposta": "DIGICAR: Reboque 200km totais.[cite: 1] Plantonistas: Euler (31 9275-4187) e Romulo (31 9168-4363).[cite: 1] NÃO POSSUI vistoria in loco.[cite: 1]"
+    },
+    {
+        "topico": "ESTILO - Táxi, Chaveiro e Estrada de Terra",
+        "palavras_chave": ["táxi estilo", "taxi estilo", "mta estilo", "chaveiro estilo", "terra estilo"],
+        "resposta": "ESTILO: Táxi/MTA R$100,00 para Panes em Geral.[cite: 1] Chaveiro cobre remoção de chave quebrada da ignição/maçaneta.[cite: 1] Estrada de terra tem cobertura notificando o grupo.[cite: 1]"
+    },
+    {
+        "topico": "EXCLUSIVA e GRAZIOTHI",
+        "palavras_chave": ["reboque exclusiva", "reboque graziothi"],
+        "resposta": "EXCLUSIVA / GRAZIOTHI: Oficina ou destino dentro de 200km totais.[cite: 1]"
+    },
+    {
+        "topico": "FORTE CAR - Panes e Acidentes",
+        "palavras_chave": ["reboque forte", "pane forte", "acidente forte", "colisão forte"],
+        "resposta": "FORTE CAR: Reboque 200km totais.[cite: 1] Acidente/Colisão/Incêndio: Enviar para oficina em 200km totais, se não aceitar, solicitar liberação. Sem retorno, enviar para Base ou Residência (menor trajeto).[cite: 1]"
+    },
+    {
+        "topico": "GASP / GESTORA / FÁCIL AUTO",
+        "palavras_chave": ["reboque gasp", "hora gasp", "trabalhada gasp"],
+        "resposta": "GASP: Toda remoção acima de 200km totais deve notificar supervisor.[cite: 1] NÃO contempla hora trabalhada ou parada (repassar ao cliente).[cite: 1]"
+    },
+    {
+        "topico": "GO LOCK - Panes, Acidente, Táxi e MTA",
+        "palavras_chave": ["reboque go", "pane go", "acidente go", "táxi go", "taxi go", "mta go"],
+        "resposta": "GO LOCK: Panes 200km totais. Acidente: local seguro do plano (se base, diária é do condutor).[cite: 1] NÃO tem Carro de Apoio.[cite: 1] Táxi R$150,00.[cite: 1] Passagens R$300,00.[cite: 1] Hospedagem R$100,00 por pessoa.[cite: 1]"
+    },
+    {
+        "topico": "IDEAL - Panes e Acidentes",
+        "palavras_chave": ["pane ideal", "acidente ideal", "reboque ideal"],
+        "resposta": "IDEAL: Panes para oficina 200km totais (se não aceitar, pedir para ele fazer e buscar reembolso na Ideal).[cite: 1] Acidente acima de 400km totais pede autorização no grupo.[cite: 1]"
+    },
+    {
+        "topico": "INOVAR - Reboque, Base e Combustível",
+        "palavras_chave": ["reboque inovar", "base inovar", "combustível inovar"],
+        "resposta": "INOVAR: Reboque >200km totais vai pra análise. Sem contato, enviar para Residência ou Base (associação paga a diária da base).[cite: 1] Falta combustível: cliente paga gasolina 5L e o galão (aprox R$20).[cite: 1]"
+    },
+    {
+        "topico": "INOVAR - Estrada, Carga, Resgate e MTA",
+        "palavras_chave": ["terra inovar", "carga inovar", "resgate inovar", "mta inovar", "táxi inovar", "taxi inovar"],
+        "resposta": "INOVAR: Veículo carregado alçada de R$200,00.[cite: 1] Resgate exige fotos/vídeos para liberação.[cite: 1] Táxi alçada de R$600,00. MTA: Por indisponibilidade de ônibus (espera >2h), libera R$600,00 para táxi/uber (NÃO informar excedente ao cliente).[cite: 1]"
+    },
+    {
+        "topico": "INNOVE - Reboque, Resgate e Estrada",
+        "palavras_chave": ["reboque innove", "resgate innove", "terra innove"],
+        "resposta": "INNOVE: Reboque 200km totais (esperar 15 min no grupo).[cite: 1] Resgate alçada R$250,00.[cite: 1] Via de terra coberta mediante autorização.[cite: 1]"
+    },
+    {
+        "topico": "LIBRE e PROAPP",
+        "palavras_chave": ["reboque libre", "terra libre", "reboque proapp"],
+        "resposta": "LIBRE / PROAPP: Reboque 200km totais. Libre cobre estrada de terra notificando o supervisor.[cite: 1]"
+    },
+    {
+        "topico": "LIDERY - Reboque e Hotel",
+        "palavras_chave": ["reboque lidery", "hotel lidery"],
+        "resposta": "LIDERY: Pane 200km totais.[cite: 1] Hotel: 3 diárias limitadas a R$120,00 por dia (independente de ocupantes).[cite: 1]"
+    },
+    {
+        "topico": "LIFECLUB - Táxi",
+        "palavras_chave": ["táxi life", "taxi life", "lifeclub"],
+        "resposta": "LIFECLUB: NÃO contempla serviço de Táxi Urbano.[cite: 1]"
+    },
+    {
+        "topico": "MOTOR HOME - Reboque, Táxi, Destombamento",
+        "palavras_chave": ["reboque motor", "táxi motor", "taxi motor", "destombamento motor", "resgate motor"],
+        "resposta": "MOTOR HOME: Reboque 200km totais.[cite: 1] Táxi R$70,00 (40km totais).[cite: 1] Destombamento SÓ em via pública via reembolso (R$2500 veículo, máx R$5000 conjunto).[cite: 1] NÃO cobre resgate.[cite: 1] Permite uso de patins.[cite: 1]"
+    },
+    {
+        "topico": "MG CAR - MTA",
+        "palavras_chave": ["mta mg", "táxi mg", "taxi mg", "hotel mg"],
+        "resposta": "MG CAR: MTA (Táxi/Passagens/Hotel) - Cobertura padrão, cliente tem direito.[cite: 1]"
+    },
+    {
+        "topico": "MYPASS - Panes e Acidente",
+        "palavras_chave": ["reboque mypass", "pane mypass", "acidente mypass", "análise mypass"],
+        "resposta": "MYPASS: Pane 200km totais.[cite: 1] Acidente/Colisão/Incêndio segue cobertura padrão. NÃO enviar serviços em análise no grupo de relacionamento.[cite: 1]"
+    },
+    {
+        "topico": "NACIONAL CAR - Resgate",
+        "palavras_chave": ["resgate nacional", "destombamento nacional"],
+        "resposta": "NACIONAL CAR: Destombamento e Resgate só sob consulta. Abrir atendimento, realizar cotações com fotos/vídeos e enviar no grupo pedindo aprovação.[cite: 1]"
+    },
+    {
+        "topico": "NEXOOS - Reboque, Táxi e Hotel",
+        "palavras_chave": ["reboque nexoos", "terra nexoos", "táxi nexoos", "taxi nexoos", "hotel nexoos"],
+        "resposta": "NEXOOS: Reboque 200km totais (esperar 15 min grupo). Estrada de terra autorizada no grupo.[cite: 1] Táxi R$150,00 (200km totais).[cite: 1] Hotel 1 diária de R$100,00 por pessoa.[cite: 1]"
+    },
+    {
+        "topico": "NÚCLEO PROTEÇÃO - Reboque, Táxi e MTA",
+        "palavras_chave": ["reboque núcleo", "táxi núcleo", "taxi núcleo", "mta núcleo", "hotel núcleo"],
+        "resposta": "NÚCLEO PROTEÇÃO: Reboque 200km totais.[cite: 1] Táxi R$200,00 (100km).[cite: 1] MTA passagens a partir de 100km. Hotel 1 diária R$100,00/pessoa.[cite: 1]"
+    },
+    {
+        "topico": "PORTO SUL - Reboque e Estrada",
+        "palavras_chave": ["reboque porto", "terra porto", "porto sul"],
+        "resposta": "PORTO SUL: Comercial oficina 200km totais. Fora do comercial: base ou domicílio 200km totais. Cobre estrada de terra (notificar supervisor).[cite: 1]"
+    },
+    {
+        "topico": "PRIX e PROLINE - Panes e Acidentes",
+        "palavras_chave": ["reboque prix", "pane prix", "reboque proline", "pane proline", "terra proline"],
+        "resposta": "PRIX / PROLINE: Panes oficina 200km totais. Acidente oficina 200km totais, se não tiver retorno, Base ou Residência.[cite: 1] Proline cobre estrada de terra notificando grupo.[cite: 1]"
+    },
+    {
+        "topico": "PROTEGE MAIS, PORTO BRASIL, POSITIVE CAR",
+        "palavras_chave": ["reboque protege", "reboque porto brasil", "reboque positive"],
+        "resposta": "Estas associações (PROTEGE MAIS, PORTO BRASIL, POSITIVE CAR): Reboque 200km totais ou colocar em análise no grupo.[cite: 1]"
+    },
+    {
+        "topico": "REAL TRUCK - Remoções e Estrada",
+        "palavras_chave": ["oficina real truck", "reboque real", "residência real truck", "terra real truck"],
+        "resposta": "REAL TRUCK: Permite remoção Oficina p/ Oficina se não usou reboque por Pane no mês.[cite: 1] Residência não cadastrada: direito de continuação dia útil.[cite: 1] Cobre estrada de terra.[cite: 1]"
+    },
+    {
+        "topico": "REAL TRUCK - Resgate, Táxi e Hotel",
+        "palavras_chave": ["resgate real", "destombamento real", "hotel real", "acidente real", "táxi real", "taxi real"],
+        "resposta": "REAL TRUCK: Destombamento/Resgate: R$500,00.[cite: 1] Hotel: 1 diária de R$150,00/pessoa (máx R$300).[cite: 1] Acidente >1000km totais pede autorização. Táxi R$150,00 (200km totais).[cite: 1]"
+    },
+    {
+        "topico": "SPLIT RISK e FILIAIS - Panes, Acidente e Apoio",
+        "palavras_chave": ["reboque split", "pane split", "acidente split", "apoio split", "globus", "stop club", "lince", "turquim", "meo"],
+        "resposta": "SPLIT RISK (E filiais MY PASS, GLOBUS, STOP CLUB, LINCE, TURQUIM, MEO): Comercial oficina 200km totais.[cite: 1] Fora comercial/Acidente: local seguro indicado (se for base do prestador, as diárias são do cliente).[cite: 1] NÃO tem carro de apoio.[cite: 1] Estrada terra: notificar grupo.[cite: 1]"
+    },
+    {
+        "topico": "SPLIT RISK e FILIAIS - Táxi, MTA e Hotel",
+        "palavras_chave": ["táxi split", "taxi split", "mta split", "hotel split"],
+        "resposta": "SPLIT RISK: Táxi R$150,00.[cite: 1] Passagens R$300,00.[cite: 1] Hospedagem R$100,00 por pessoa.[cite: 1]"
+    },
+    {
+        "topico": "SUPREMA - Pane e Acidente",
+        "palavras_chave": ["pane suprema", "acidente suprema", "base suprema"],
+        "resposta": "SUPREMA: Pane 200km totais.[cite: 1] Acidente vai para Base do Prestador (Associação paga diária, e o cliente contata o ADM para retirar nas primeiras 4h úteis).[cite: 1]"
+    },
+    {
+        "topico": "SUPERA - Táxi, MTA, Hotel e Chaveiro",
+        "palavras_chave": ["táxi supera", "taxi supera", "mta supera", "hotel supera", "chaveiro supera"],
+        "resposta": "SUPERA: Táxi R$50,00.[cite: 1] Retorno/Continuação (MTA) R$200,00.[cite: 1] Hotel 1 diária máx R$200,00.[cite: 1] Chaveiro alçada de R$100,00.[cite: 1]"
+    },
+    {
+        "topico": "TÁXI FORT - Base e Táxi",
+        "palavras_chave": ["reboque fort", "base fort", "táxi fort", "taxi fort"],
+        "resposta": "TÁXI FORT: Fora do comercial enviar p/ residência ou base do prestador (o menor).[cite: 1] Táxi SOMENTE para Acidente/Colisão/Incêndio até R$200,00 (200km totais).[cite: 1]"
+    },
+    {
+        "topico": "TM BRASIL - Remoções, Estrada e Resgate",
+        "palavras_chave": ["residência tm", "terra tm", "mineradora tm", "oficina tm", "resgate tm", "destombamento tm"],
+        "resposta": "TM BRASIL: Residência não cadastrada: continuação dia seguinte.[cite: 1] Estrada de terra/mineradora: coberta.[cite: 1] Oficina p/ Oficina permite se não usou pane no mês.[cite: 1] Resgate enviar valor no grupo.[cite: 1]"
+    },
+    {
+        "topico": "TRIAD - Reboque e Acidentes",
+        "palavras_chave": ["reboque triad", "acidente triad", "base triad", "incêndio triad"],
+        "resposta": "TRIAD: Reboque 200km totais.[cite: 1] Acidente/Colisão/Incêndio obrigatoriamente para a Base (Associação paga). Cliente deve contatar ADM em 48h senão paga diária. Remoção da base SÓ com autorização da associação.[cite: 1]"
+    },
+    {
+        "topico": "UNIBRAS MHAIS (RJ)",
+        "palavras_chave": ["base unibras", "base mhais"],
+        "resposta": "UNIBRAS MHAIS (RJ): NÃO contempla envio para a base. Associação não paga diárias. Orientar ir para a residência.[cite: 1]"
+    },
+    {
+        "topico": "UNIBRÁS BENEFÍCIOS (BH) e VENTURE",
+        "palavras_chave": ["reboque unibrás", "pane venture", "reboque venture"],
+        "resposta": "UNIBRÁS BENEFÍCIOS (BH) / VENTURE: Reboque 200km totais para oficina mais próxima (Venture apenas Pane Elétrica/Mecânica).[cite: 1]"
+    },
+    {
+        "topico": "YOUCAR - Reboque, Estrada, Táxi e Resgate",
+        "palavras_chave": ["reboque youcar", "terra youcar", "táxi youcar", "taxi youcar", "hotel youcar", "resgate youcar"],
+        "resposta": "YOUCAR: Reboque 200km totais.[cite: 1] Via não reconhecida coberta pedindo autorização.[cite: 1] Táxi R$200,00 (200km totais).[cite: 1] Hotel 2 diárias de R$150,00/pessoa.[cite: 1] Resgate alçada de R$1.500,00.[cite: 1]"
+    },
+
+    # MANUAL RESIDENCIAL
+    {
+        "topico": "Residencial - Chaveiro",
+        "palavras_chave": ["chaveiro residencial", "chave residencial"],
+        "resposta": "Residencial: Chaveiro Emergencial (quebra/perda porta principal) R$150,00 (3 por ano).[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Eletricista",
+        "palavras_chave": ["eletricista", "elétrico residencial"],
+        "resposta": "Residencial: Eletricista (problemas elétricos) R$120,00 (3 por ano, 1 por mês).[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Encanador",
+        "palavras_chave": ["encanador", "vazamento"],
+        "resposta": "Residencial: Encanador (tubulação aparente) R$120,00 (3 por ano, 1 por mês).[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Vidraceiro",
+        "palavras_chave": ["vidraceiro", "vidro"],
+        "resposta": "Residencial: Vidraceiro (quebra vidro externo porta/janela) R$150,00 (3 por ano, 1 por mês).[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Desentupimento",
+        "palavras_chave": ["desentupimento", "entupido"],
+        "resposta": "Residencial: Desentupimento R$180,00 (3 por ano, 1 por mês).[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Limpeza de Ar Condicionado",
+        "palavras_chave": ["ar condicionado", "limpeza ar"],
+        "resposta": "Residencial: Limpeza Ar Condicionado R$180,00 (2 por ano). Na TRIAD a utilização é a cada 6 meses.[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Linha Branca ou Marrom",
+        "palavras_chave": ["linha branca", "linha marrom", "eletrodoméstico"],
+        "resposta": "Residencial: Linha Branca/Marrom (problema em eletrodoméstico) R$160,00 (2 por ano, 1 por mês).[cite: 1]"
+    },
+    {
+        "topico": "Residencial - Inspeção Lar",
+        "palavras_chave": ["inspeção lar", "check-up"],
+        "resposta": "Residencial: Inspeção e Check-Up R$120,00 (Consultar manual para limite).[cite: 1]"
+    },
+
+    # ERROS SISTÊMICOS
+    {
+        "topico": "Erros Sistêmicos: Hinova (SAME)",
+        "palavras_chave": ["hinova", "same", "token", "sincronização", "erro de comunicação"],
+        "resposta": "Hinova/SAME: Erro de TOKEN.[cite: 1] 1- Verifique outro item do mesmo cliente (se sim vá pro 2, se não avise grupo SAME). 2- Verifique OUTRO cliente (se sim avise SAME, se não vá pro 3). 3- Sincronize itens da base (se der certo avise SAME, se errado vá pro 4). 4- Informe no grupo indisponibilidade do SGA. 5- Atendimento SÓ pode ser aberto conforme último status (ATIVO abre normal; INATIVO abre particular).[cite: 1]"
     }
 ]
 
 # ---------------------------------------------------------
-# 2. FUNÇÃO DE BUSCA (Substitui o LangChain e a IA)
+# 2. FUNÇÃO DE BUSCA (ATUALIZADA E MAIS INTELIGENTE)
 # ---------------------------------------------------------
 def buscar_no_manual(pergunta):
     # Transforma a pergunta em letras minúsculas para facilitar a busca
     pergunta_formatada = pergunta.lower()
     
-    # Procura na nossa base de conhecimento
+    # Lógica aprimorada: agora ele confere se TODAS as palavras chaves separadas por espaço estão na frase!
+    # Isso permite que você digite "reboque aavm" ou "qual a regra de reboque na associação aavm" e ele encontre!
     for item in BASE_CONHECIMENTO:
-        for palavra in item["palavras_chave"]:
-            if palavra in pergunta_formatada:
+        for regra_busca in item["palavras_chave"]:
+            termos = regra_busca.split()
+            if all(termo in pergunta_formatada for termo in termos):
                 return item["resposta"]
     
-    # Se não encontrar nenhuma palavra-chave, retorna a regra padrão do seu sistema
+    # Se não encontrar nenhuma palavra-chave
     return "⚠️ NÃO CONTEMPLADO. Siga a cobertura padrão da Central de Atendimento e verifique com a supervisão."
 
 
@@ -316,28 +607,23 @@ if "messages" not in st.session_state:
 caixa_chat = st.container()
 caixa_chat.markdown("<div id='caixa-chat-ancora'></div>", unsafe_allow_html=True)
 
-# Desenha as mensagens antigas na tela
 with caixa_chat:
     for message in st.session_state.messages:
         avatar = "👤" if message["role"] == "user" else "🤖"
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
 
-# Recebe a nova pergunta do usuário
 if pergunta := st.chat_input("Qual é a sua dúvida operacional ou regra de acionamento?"):
     
-    # Exibe a pergunta do usuário
     st.session_state.messages.append({"role": "user", "content": pergunta})
     with caixa_chat:
         with st.chat_message("user", avatar="👤"):
             st.markdown(pergunta)
             
-    # Gera e exibe a resposta do assistente
     with caixa_chat:
         with st.chat_message("assistant", avatar="🤖"):
             with st.spinner("Buscando regras operacionais..."):
                 
-                # Chama a nova função de busca em vez de chamar a IA
                 resposta = buscar_no_manual(pergunta)
                 
                 st.markdown(resposta)
