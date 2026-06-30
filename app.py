@@ -294,9 +294,19 @@ BASE_CONHECIMENTO = [
         "resposta": "AGIBENS: Reboque dentro de 200km totais (se passar, entra em análise).[cite: 1] Táxi Urbano de até R$50,00 (o que passar é excedente).[cite: 1]"
     },
     {
-        "topico": "AGN - Reboque e Exceções Gerais",
-        "palavras_chave": ["reboque agn", "apoio agn", "patins agn"],
-        "resposta": "AGN: Reboque raio de 200km totais (aguardar 15 min grupo). NÃO contempla patins (repassar valor ao cliente).[cite: 1] NÃO contempla carro de apoio.[cite: 1]"
+        "topico": "AGN - Reboque",
+        "palavras_chave": ["reboque agn", "quilometragem agn", "km agn"],
+        "resposta": "AGN: Reboque com raio de 200km totais. Em caso de excedente, aguardar 15 min no grupo."
+    },
+    {
+        "topico": "AGN - Patins",
+        "palavras_chave": ["patins agn"],
+        "resposta": "AGN: NÃO contempla o uso de patins. Caso haja custo, o valor deve ser repassado ao cliente."
+    },
+    {
+        "topico": "AGN - Carro de Apoio",
+        "palavras_chave": ["apoio agn", "carro extra agn"],
+        "resposta": "AGN: NÃO contempla carro de apoio."
     },
     {
         "topico": "AGN - Fora do Horário Comercial (Pane)",
