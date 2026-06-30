@@ -124,9 +124,39 @@ BASE_CONHECIMENTO = [
         "resposta": "Em impossibilidade de remoção imediata fora do horário comercial, existem ferramentas para proporcionar segurança: Diária de Hotel, MTA (Meio de Transporte Alternativo) e Guarda de veículo.[cite: 1] Importante: Uso do reboque é pré-requisito.[cite: 1]"
     },
     {
-        "topico": "Atendimentos sem Cobertura (Restrições Gerais)",
-        "palavras_chave": ["sem cobertura", "não cobre", "atolado", "sem acesso", "estrada de terra", "cnt", "apreendido", "destombamento geral", "resgate geral", "carregado", "mercadoria", "busca e apreensão", "oficina para oficina", "atividade remunerada", "táxi para passageiro"],
-        "resposta": "Veículo atolado ou sem acesso: Negligência ou via não reconhecida exigem que o cliente providencie meios próprios para levar à via pavimentada, sem reembolso.[cite: 1] Desacordo com CNT: Veículos retidos/apreendidos por descumprir leis de trânsito não têm cobertura.[cite: 1] Destombamento/Resgate: Não incluídos nos planos gerais (verificar exceções).[cite: 1] Veículos carregados: Não se remove com mercadorias (salvo uso pessoal).[cite: 1] Busca e apreensão/furto/roubo: Não é realizada remoção.[cite: 1] Oficina para oficina: Não contemplado, pois não é emergencial.[cite: 1] Atividade remunerada: MTA, Táxi e Hotel são facultados somente ao condutor, a responsabilidade dos passageiros é do cliente.[cite: 1]"
+        "topico": "Veículo Atolado ou Sem Acesso",
+        "palavras_chave": ["atolado", "sem acesso", "barro", "lama", "estrada de terra"],
+        "resposta": "Veículo atolado ou sem acesso: Negligência ou via não reconhecida exigem que o cliente providencie meios próprios para levar à via pavimentada, sem reembolso.[cite: 1]"
+    },
+    {
+        "topico": "Desacordo com CNT / Apreendidos",
+        "palavras_chave": ["cnt", "apreendido", "retido", "polícia", "blitz", "leis de trânsito"],
+        "resposta": "Desacordo com CNT: Veículos retidos/apreendidos por descumprir leis de trânsito não têm cobertura.[cite: 1]"
+    },
+    {
+        "topico": "Destombamento e Resgate Geral",
+        "palavras_chave": ["destombamento", "resgate", "caiu", "ribanceira"],
+        "resposta": "Destombamento/Resgate: Não estão incluídos nos planos gerais da assistência. Verifique sempre se há cobertura em caráter de exceção na associação do cliente.[cite: 1]"
+    },
+    {
+        "topico": "Veículos Carregados",
+        "palavras_chave": ["carregado", "mercadoria", "carga", "peso"],
+        "resposta": "Veículos carregados: Não é realizada a remoção de veículos carregados com mercadorias e objetos (salvo objetos de uso pessoal).[cite: 1]"
+    },
+    {
+        "topico": "Busca e Apreensão / Roubo",
+        "palavras_chave": ["busca e apreensão", "roubo", "furto", "recuperado"],
+        "resposta": "Veículos com busca e apreensão: Não é realizada a remoção de veículos com queixa de furto ou roubo.[cite: 1]"
+    },
+    {
+        "topico": "Oficina para Oficina",
+        "palavras_chave": ["oficina para oficina", "transferir de oficina", "levar para outra oficina"],
+        "resposta": "Atendimento de oficina para oficina: Em não se caracterizando condição emergencial, o plano geral não contempla prestação de serviço para veículos que já se encontrem em uma oficina.[cite: 1]"
+    },
+    {
+        "topico": "Atividade Remunerada / Aplicativo",
+        "palavras_chave": ["atividade remunerada", "uber", "táxi para passageiro", "passageiros", "aplicativo"],
+        "resposta": "Veículos de atividade remunerada: Em caso de remoção, MTA, Táxi e Diária de hotel são facultados somente ao condutor. A responsabilidade civil dos passageiros é do cliente.[cite: 1]"
     },
     {
         "topico": "Atendimentos Específicos: Cavalo Mecânico, Animais e Frustrados",
